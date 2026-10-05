@@ -1,0 +1,10 @@
+{
+  "description": "Experience the elegance of Brazilian home fragrances with a premium website that showcases aromatic products through immersive storytelling and sophisticated design.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
