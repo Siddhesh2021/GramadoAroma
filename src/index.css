@@ -171,6 +171,67 @@ button, [role='button'] { -webkit-user-select: none; user-select: none; -webkit-
   color: #67594e;
 }
 
+/* Subtle candle smoke: CSS-only, lightweight, and automatically visible on
+   desktop/tablet while keeping the hero calm on mobile. */
+.hero-candle-smoke {
+  position: absolute;
+  left: 50%;
+  top: 47%;
+  width: 18%;
+  height: 34%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  filter: blur(4px);
+  opacity: .5;
+  z-index: 2;
+  mix-blend-mode: screen;
+}
+.hero-candle-smoke-puff {
+  position: absolute;
+  left: 50%;
+  bottom: 8%;
+  width: 22%;
+  height: 34%;
+  border-radius: 999px;
+  background: radial-gradient(circle at 50% 70%, rgba(255,248,235,.32) 0%, rgba(255,248,235,.12) 45%, rgba(255,248,235,0) 78%);
+  transform: translateX(-50%) scale(.7);
+  opacity: 0;
+  animation: candleSmoke 4.6s ease-out infinite;
+}
+.hero-candle-smoke-puff-b { animation-delay: 1.45s; transform-origin: 45% 100%; }
+.hero-candle-smoke-puff-c { animation-delay: 2.9s; transform-origin: 55% 100%; }
+
+@keyframes candleSmoke {
+  0% {
+    transform: translate3d(-50%, 8%, 0) scale(.62) rotate(0deg);
+    opacity: 0;
+  }
+  12% { opacity: .26; }
+  42% {
+    transform: translate3d(calc(-50% - 7px), -18%, 0) scale(.95) rotate(-2deg);
+    opacity: .20;
+  }
+  68% {
+    transform: translate3d(calc(-50% + 5px), -46%, 0) scale(1.2) rotate(2deg);
+    opacity: .11;
+  }
+  100% {
+    transform: translate3d(calc(-50% + 12px), -78%, 0) scale(1.45) rotate(4deg);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .hero-candle-smoke {
+    filter: blur(3px);
+    opacity: .42;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-candle-smoke-puff { animation: none; opacity: .08; }
+}
+
 .hero-photo {
   /* Preserve the photograph; warmth comes from the surrounding composition. */
   isolation: isolate;
