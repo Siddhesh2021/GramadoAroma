@@ -10,8 +10,8 @@ function Hero({ ready }: { ready: boolean }) {
   const { t, assets } = useCMS(); const { go } = useRouter()
   return (
     <section className={`hero-stage relative h-[100dvh] min-h-[640px] overflow-hidden bg-blush ${ready ? 'in' : ''}`} aria-labelledby="hero-title">
-      <div className={`hero-photo absolute inset-0 transition-transform duration-[2600ms] ease-out-lux ${ready ? 'scale-100' : 'scale-[1.18]'}`}>
-        <Parallax speed={-0.18} className="absolute inset-[-8%_0]"><img src={assets.living} alt="Sala acolhedora com luz suave" fetchPriority="high" className="h-full w-full object-cover opacity-90" /></Parallax>
+      <div className={`hero-photo absolute inset-0 transition-transform duration-[2600ms] ease-out-lux ${ready ? 'scale-100' : 'scale-[1.05]'}`}>
+        <Parallax speed={0.06} className="absolute inset-[-4%_0] h-[108%]"><img src={assets.living} alt="Sala acolhedora com luz suave" fetchPriority="high" className="h-full w-full object-cover opacity-90" /></Parallax>
       </div>
       <div className="hero-wash absolute inset-0" />
       <div className="hero-vignette absolute inset-0" />
