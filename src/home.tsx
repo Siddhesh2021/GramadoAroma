@@ -17,7 +17,14 @@ function Hero({ ready }: { ready: boolean }) {
       <div className="hero-vignette absolute inset-0" />
       <div className="hero-grain absolute inset-0" aria-hidden="true" />
       <Parallax speed={-0.1} className="absolute bottom-[-6%] right-[6%] hidden w-[22vw] max-w-[340px] md:block">
-        <div className={`arch clip aspect-[3/4.2] overflow-hidden border border-gold/40 bg-mist p-2`} style={{ transitionDelay: '.6s' }}><img src={assets.candleTable} alt="Vela aromática Gramado Aroma" className="arch h-full w-full object-cover" style={{ transitionDelay: '.6s' }} /></div>
+        <div className="hero-candle arch clip relative aspect-[3/4.2] overflow-hidden border border-gold/40 bg-mist p-2" style={{ transitionDelay: '.6s' }}>
+          <img src={assets.candleTable} alt="Vela aromática Gramado Aroma" className="arch h-full w-full object-cover" style={{ transitionDelay: '.6s' }} />
+          <span className="hero-candle-smoke" aria-hidden="true">
+            <i className="hero-candle-smoke-puff hero-candle-smoke-puff-a" />
+            <i className="hero-candle-smoke-puff hero-candle-smoke-puff-b" />
+            <i className="hero-candle-smoke-puff hero-candle-smoke-puff-c" />
+          </span>
+        </div>
       </Parallax>
       <Parallax speed={-0.05} className="absolute -left-10 top-24 hidden text-logo/30 lg:block"><Botanical className="h-[60vh]" /></Parallax>
       <div className="relative flex h-full flex-col justify-center px-0 pb-10 pt-24 md:justify-end md:px-0 md:pb-24 md:pt-0">
