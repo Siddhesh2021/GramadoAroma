@@ -86,7 +86,7 @@ export function ProductCard({ p, tall, onQuick }: { p: Product; tall?: boolean; 
   return (
     <article className="group" itemScope itemType="https://schema.org/Product">
       <button onClick={() => go('/produto/' + p.id)} data-cursor="view" data-cursor-label={t('prod.view')} className="block w-full text-left" aria-label={tr(p.name)}>
-        <div className={`relative overflow-hidden bg-mist ${tall ? 'aspect-[3/4.3]' : 'aspect-[4/5]'}`}>
+        <div className="relative aspect-[4/5] overflow-hidden bg-mist">
           <img itemProp="image" loading="lazy" src={p.imgs[0]} alt={tr(p.name)} className="swap-press absolute inset-0 h-full w-full object-cover transition-all duration-[1400ms] ease-out-lux group-hover:scale-[1.06] group-hover:opacity-0 group-active:scale-[1.04] group-active:opacity-0" />
           <img loading="lazy" src={p.imgs[1]} alt="" className="swap-press absolute inset-0 h-full w-full scale-[1.12] object-cover opacity-0 transition-all duration-[1400ms] ease-out-lux group-hover:scale-100 group-hover:opacity-100 group-active:scale-100 group-active:opacity-100" />
           {!p.stock && <span className="eyebrow absolute left-4 top-4 bg-cream/90 px-3 py-1.5 !text-[9px] text-taupe">{t('prod.out')}</span>}
