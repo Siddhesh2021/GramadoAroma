@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { CMSProvider } from './cms'
 import { Router, Loader } from './motion'
 import { CartProvider, Toast } from './ui'
-import { Nav, Footer, CartDrawer } from './chrome'
+import { Nav, Footer, CartDrawer, WhatsAppFab } from './chrome'
 import { Home } from './home'
 import { Products, ProductDetail, About, ReviewsPage, Contact, NotFound } from './pages'
 import Admin from './admin'
@@ -25,6 +25,7 @@ function Site({ path, ready }: { path: string; ready: boolean }) {
       <Footer />
       <CartDrawer />
       <Toast />
+      <WhatsAppFab />
     </>
   )
 }

@@ -13,6 +13,16 @@ export const LangSwitch = ({ light }: { light?: boolean }) => {
   )
 }
 
+export function WhatsAppFab() {
+  const { settings } = useCMS()
+  return (
+    <a href={`https://wa.me/${settings.whatsapp}`} target="_blank" rel="noreferrer" aria-label="Falar com a Gramado Aroma pelo WhatsApp" title="WhatsApp" className="whatsapp-fab fixed bottom-[calc(1.25rem+var(--sab))] right-[max(1.25rem,var(--sar))] z-[58] flex h-14 w-14 items-center justify-center rounded-full bg-[#2f6b4f] text-cream shadow-lg shadow-soft/20 transition-transform duration-500 hover:scale-105 active:scale-95">
+      <MessageCircle strokeWidth={1.25} className="h-6 w-6" />
+      <span className="hidden whitespace-nowrap text-xs font-semibold tracking-[.12em]">WhatsApp</span>
+    </a>
+  )
+}
+
 export function Nav() {
   const { nav, tr, t, settings } = useCMS(); const { go, path } = useRouter(); const { count, setOpen } = useCart()
   const scrolled = useScrolled(); const [menu, setMenu] = useState(false)
@@ -182,15 +192,15 @@ export function Footer() {
   const [email, setEmail] = useState(''); const [ok, setOk] = useState(false)
   return (
     <footer className="relative overflow-hidden border-t border-logo/10 bg-blush pt-20 text-logo md:pt-28">
-      <Botanical className="absolute -left-16 top-10 h-[420px] text-logo/20" />
+      <Botanical className="footer-botanical absolute -left-16 top-10 h-[420px]" />
       <div className="relative mx-auto max-w-[1600px] px-[max(1.25rem,var(--sal))] md:px-[max(2.5rem,var(--sar))]">
         <div className="grid gap-16 lg:grid-cols-12">
           <div className="lg:col-span-6">
             <p className="font-serif text-[clamp(2.4rem,4.5vw,4.2rem)] font-light leading-[1.02]">{t('footer.news')}</p>
-            <form onSubmit={(e) => { e.preventDefault(); if (/\S+@\S+/.test(email)) setOk(true) }} className="mt-10 flex max-w-lg items-end gap-6 border-b border-logo/25 pb-3 focus-within:border-gold">
+            <form onSubmit={(e) => { e.preventDefault(); if (/\S+@\S+/.test(email)) setOk(true) }} className="footer-newsletter mt-10 flex max-w-lg items-end gap-6 border-b border-logo/25 pb-3 focus-within:border-gold">
               <label className="sr-only" htmlFor="news">{t('form.email')}</label>
-              <input id="news" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t('form.email')} className="flex-1 bg-transparent text-lg text-logo placeholder-logo/40 outline-none" />
-              <button className="eyebrow tap-y shrink-0 !text-[10px] py-1 text-gold hover:text-logo active:opacity-60">{t('footer.newsBtn')}</button>
+              <input id="news" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t('form.email')} className="flex-1 bg-transparent text-lg text-soft placeholder-logo/70 outline-none" />
+              <button className="eyebrow tap-y shrink-0 !text-[10px] py-1 font-semibold text-soft hover:text-gold active:opacity-60">{t('footer.newsBtn')}</button>
             </form>
             <p className={`mt-3 text-xs text-gold transition-opacity duration-500 ${ok ? 'opacity-100' : 'opacity-0'}`}>{t('footer.newsOk')}</p>
           </div>

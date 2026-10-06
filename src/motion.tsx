@@ -8,26 +8,35 @@ import { createContext, useContext, useEffect, useRef, useState, type ReactNode,
 
 export const reduced = () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-// lerped scroll shared by every parallax layer, single rAF loop
+// One shared lerped scroll loop keeps all parallax layers on the same frame.
 const subs = new Set<(y: number) => void>()
-let smooth = 0, started = false
+let smooth = 0, raf = 0
 function loop() {
   const target = window.scrollY
   smooth += (target - smooth) * (reduced() ? 1 : 0.09)
   if (Math.abs(target - smooth) < 0.05) smooth = target
   subs.forEach((f) => f(smooth))
-  requestAnimationFrame(loop)
+  if (subs.size) raf = requestAnimationFrame(loop)
+  else raf = 0
 }
 export function useSmoothScroll(fn: (y: number) => void) {
+  const fnRef = useRef(fn)
+  fnRef.current = fn
   useEffect(() => {
-    if (!started) { started = true; smooth = window.scrollY; requestAnimationFrame(loop) }
-    subs.add(fn); return () => { subs.delete(fn) }
-  })
+    const subscriber = (y: number) => fnRef.current(y)
+    if (!subs.size) smooth = window.scrollY
+    subs.add(subscriber)
+    if (!raf) raf = requestAnimationFrame(loop)
+    return () => {
+      subs.delete(subscriber)
+      if (!subs.size && raf) { cancelAnimationFrame(raf); raf = 0 }
+    }
+  }, [])
 }
 
 /* Parallax: offset proportional to the element's distance from viewport centre.
    speed 0.1 = background drift, 0.25 = foreground product, negative = counter-motion type. */
-export function Parallax({ speed = 0.15, className = '', children, scale, mobileOnly = false }: { speed?: number; className?: string; children: ReactNode; scale?: number; mobileOnly?: boolean }) {
+export function Parallax({ speed = 0.15, className = '', children, scale, mobileOnly = false, maxOffset }: { speed?: number; className?: string; children: ReactNode; scale?: number; mobileOnly?: boolean; maxOffset?: number }) {
   const ref = useRef<HTMLDivElement>(null)
   const visible = useRef(true)
   useEffect(() => {
@@ -39,7 +48,10 @@ export function Parallax({ speed = 0.15, className = '', children, scale, mobile
     if (mobileOnly && innerWidth >= 768) { el.style.transform = ''; return }
     const r = el.parentElement!.getBoundingClientRect()
     const mid = r.top + (window.scrollY - y) + r.height / 2 - window.innerHeight / 2
-    el.style.transform = `translate3d(0, ${(-mid * speed).toFixed(2)}px, 0)${scale ? ` scale(${scale})` : ''}`
+    const offset = -mid * speed
+    const limit = maxOffset ?? Math.min(window.innerHeight * 0.06, 56)
+    const boundedOffset = Math.max(-limit, Math.min(limit, offset))
+    el.style.transform = `translate3d(0, ${boundedOffset.toFixed(2)}px, 0)${scale ? ` scale(${scale})` : ''}`
   })
   return <div ref={ref} className={`will-change-transform ${className}`}>{children}</div>
 }

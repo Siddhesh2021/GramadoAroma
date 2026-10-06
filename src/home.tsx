@@ -20,15 +20,15 @@ function Hero({ ready }: { ready: boolean }) {
         <div className={`arch clip aspect-[3/4.2] overflow-hidden border border-gold/40 bg-mist p-2`} style={{ transitionDelay: '.6s' }}><img src={assets.candleTable} alt="Vela aromática Gramado Aroma" className="arch h-full w-full object-cover" style={{ transitionDelay: '.6s' }} /></div>
       </Parallax>
       <Parallax speed={-0.05} className="absolute -left-10 top-24 hidden text-logo/30 lg:block"><Botanical className="h-[60vh]" /></Parallax>
-      <div className="relative flex h-full flex-col justify-end pb-16 md:pb-24">
+      <div className="relative flex h-full flex-col justify-center px-0 pb-10 pt-24 md:justify-end md:px-0 md:pb-24 md:pt-0">
         <Container className="w-full">
           <Parallax speed={0.08}>
-            <p className="fade-up eyebrow mb-8 flex items-center gap-3 text-gold" style={{ transitionDelay: '.2s' }}><Sparkle />{t('hero.label')}</p>
-            <h1 id="hero-title" className="max-w-6xl font-serif text-[clamp(3.25rem,13vw,5.5rem)] font-light leading-[0.9] tracking-[-0.015em] text-logo md:text-[clamp(4rem,8.2vw,8.4rem)]">
-              <Lines delay={0.3} step={0.12} lines={[t('hero.title1'), <em key="e" className="font-light italic text-taupe">{t('hero.title2')}</em>]} />
+            <p className="hero-eyebrow fade-up eyebrow mb-8 flex w-fit items-center gap-3 text-gold" style={{ transitionDelay: '.2s' }}><Sparkle />{t('hero.label')}</p>
+            <h1 id="hero-title" className="max-w-6xl font-serif text-[clamp(3.25rem,13vw,5.5rem)] font-light leading-[0.94] tracking-[-0.015em] text-logo md:text-[clamp(4rem,8.2vw,8.4rem)]">
+              <Lines delay={0.3} step={0.12} lines={[t('hero.title1'), <em key="e" className="pb-1 font-light italic leading-[1.08] text-taupe">{t('hero.title2')}</em>]} />
             </h1>
-            <div className="mt-10 flex flex-col gap-10 md:flex-row md:items-end md:justify-between md:pr-[30vw]">
-              <p className="fade-up max-w-sm text-[15px] leading-relaxed text-logo/80" style={{ transitionDelay: '.7s' }}>{t('hero.sub')}</p>
+            <div className="mt-7 flex flex-col gap-7 md:mt-10 md:flex-row md:items-end md:justify-between md:gap-10 md:pr-[30vw]">
+              <p className="hero-subtext fade-up max-w-sm text-[15px] leading-relaxed text-logo/80" style={{ transitionDelay: '.7s' }}>{t('hero.sub')}</p>
               <div className="fade-up flex flex-wrap items-center gap-8 text-logo" style={{ transitionDelay: '.85s' }}>
                 <ArrowBtn onClick={() => go('/produtos')} className="!border-logo !bg-logo">{t('hero.cta')}</ArrowBtn>
                 <TextLink onClick={() => go('/sobre')}>{t('hero.cta2')}</TextLink>
@@ -41,33 +41,25 @@ function Hero({ ready }: { ready: boolean }) {
   )
 }
 
-/* Words scrub from 12% to 100% opacity as the paragraph travels through the viewport */
 function ScrubText({ text, className = '' }: { text: string; className?: string }) {
-  const ref = useRef<HTMLParagraphElement>(null)
-  useSmoothScroll(() => {
-    const el = ref.current; if (!el) return
-    const r = el.getBoundingClientRect(); const p = Math.min(1, Math.max(0, (innerHeight * 0.85 - r.top) / (r.height + innerHeight * 0.35)))
-    const spans = el.children; const n = spans.length
-    for (let i = 0; i < n; i++) (spans[i] as HTMLElement).style.opacity = String(Math.min(1, Math.max(0.12, (p * n - i) * 0.9 + 0.12)))
-  })
-  return <p ref={ref} className={className}>{text.split(' ').map((w, i) => <span key={i} className="transition-opacity duration-300">{w} </span>)}</p>
+  return <p className={className}>{text}</p>
 }
 
 function Story() {
   const { t, assets } = useCMS()
   return (
-    <section className="relative overflow-hidden pb-28 pt-20 md:pb-40 md:pt-28" aria-labelledby="story-t">
-      <Container className="grid gap-16 lg:grid-cols-12">
+    <section className="relative overflow-hidden pb-16 pt-14 md:pb-40 md:pt-28" aria-labelledby="story-t">
+      <Container className="grid gap-10 lg:grid-cols-12 lg:gap-16">
         <Reveal className="lg:col-span-7">
           <h2 id="story-t" className="font-serif text-[clamp(2.8rem,6vw,6rem)] font-light uppercase leading-[0.95] tracking-[0.01em] text-soft"><Lines lines={[t('story.t1'), <em key="a" className="normal-case italic text-gold">{t('story.t2')}</em>]} /></h2>
-          <ScrubText text={t('story.body')} className="mt-14 max-w-2xl font-serif text-[clamp(1.4rem,2.2vw,2.1rem)] font-light leading-[1.35] text-soft" />
-          <div className="fade-up mt-14 flex items-center gap-5"><span className="h-px w-16 bg-gold" /><span className="font-script text-3xl text-gold">{t('story.quote')}</span></div>
+          <ScrubText text={t('story.body')} className="story-body mt-10 max-w-2xl font-serif text-[clamp(1.4rem,2.2vw,2.1rem)] font-normal leading-[1.35] text-soft md:mt-14" />
+          <div className="fade-up mt-10 flex items-center gap-5 md:mt-14"><span className="h-px w-16 bg-gold" /><span className="font-script text-3xl text-gold">{t('story.quote')}</span></div>
         </Reveal>
         <Reveal className="relative lg:col-span-5">
           {/* Sized to roughly match the text column. It used to be aspect-3/4.3
               at w-85% plus mt-24, which rendered ~740px tall against ~500px of
               copy and left a large dead zone under the quote. */}
-          <div className="clip arch relative mx-auto aspect-[4/5] w-[80%] overflow-hidden lg:mt-8"><Parallax speed={0.12} scale={1.2} className="absolute inset-0"><img loading="lazy" src={assets.diffuser} alt="Difusor de aromas Gramado Aroma" className="h-full w-full object-cover" /></Parallax></div>
+          <div className="clip arch relative mx-auto aspect-[4/5] w-[76%] overflow-hidden lg:mt-8"><Parallax speed={0.12} scale={1.2} className="absolute inset-0"><img loading="lazy" src={assets.diffuser} alt="Difusor de aromas Gramado Aroma" className="h-full w-full object-cover" /></Parallax></div>
           <Parallax speed={-0.18} className="absolute -bottom-10 -left-4 w-[42%]"><div className="clip aspect-square overflow-hidden border-8 border-ivory" style={{ transitionDelay: '.3s' }}><img loading="lazy" src={assets.candleTea} alt="" className="h-full w-full object-cover" /></div></Parallax>
           <div className="arch pointer-events-none absolute left-[3%] top-[-3%] aspect-[4/5] w-[80%] border border-gold/40 lg:top-[calc(3rem-3%)] lg:ml-[4.5%]" />
         </Reveal>
@@ -92,7 +84,8 @@ function Collection() {
         return
       }
       const max = Math.max(0, tr.scrollWidth - innerWidth)
-      w.style.height = `${Math.max(innerHeight, innerHeight + max)}px`
+      const headerHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hdr')) || 0
+      w.style.height = `${Math.max(innerHeight, innerHeight + max - headerHeight)}px`
     }
     syncHeight()
     const ro = new ResizeObserver(syncHeight)
@@ -117,8 +110,8 @@ function Collection() {
   })
   return (
     <section ref={wrap} className="relative bg-mist" aria-labelledby="col-t">
-      <div className="overflow-hidden py-28 lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:justify-center lg:py-0">
-        <Parallax mobileOnly speed={-0.055}>
+      <div className="overflow-hidden py-28 lg:sticky lg:top-[var(--hdr)] lg:flex lg:h-[calc(100dvh-var(--hdr))] lg:flex-col lg:justify-center lg:py-0">
+        <Parallax mobileOnly speed={-0.055} className="collection-heading-plane">
           <Container className="mb-10 flex flex-col gap-5 md:mb-14 md:flex-row md:items-end md:justify-between">
             <Reveal><h2 id="col-t" className="font-serif text-[clamp(2.65rem,6vw,6rem)] font-light uppercase leading-[0.95]"><Lines lines={[t('col.title')]} /></h2></Reveal>
             <Reveal className="max-w-sm"><p className="fade-up text-sm leading-relaxed text-taupe">{t('col.sub')}</p></Reveal>
@@ -136,7 +129,7 @@ function Collection() {
                 <div className="relative aspect-[4/5] overflow-hidden">
                   <img loading="lazy" src={p.imgs[0]} alt={tr(p.name)} className="h-full w-full scale-[1.08] object-cover transition-transform duration-[1600ms] ease-out-lux group-hover:translate-x-[-2%] group-hover:scale-[1.14]" />
                   <div className="absolute inset-0 bg-gradient-to-t from-soft/70 via-transparent opacity-60 transition-opacity duration-700 group-hover:opacity-100" />
-                  <div className="absolute inset-x-6 bottom-6 text-cream">
+                  <div className="collection-card-copy absolute inset-x-0 bottom-0 px-6 pb-6 pt-16 text-cream">
                     <p className="eyebrow mb-2 !text-[9px] text-gold-2">{tr(f.name)} · {p.size}</p>
                     <p className="overflow-hidden font-serif text-[clamp(1.6rem,2.4vw,2.6rem)] leading-[1.02]"><span className="block transition-transform duration-[900ms] ease-out-lux md:translate-y-2 md:group-hover:translate-y-0">{tr(p.name)}</span></p>
                     <div className="mt-3 flex items-center justify-between overflow-hidden"><span className="block text-sm tabular-nums transition-all duration-[900ms] ease-out-lux md:translate-y-full md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">{brl(p.price)}</span><span className="eyebrow flex items-center gap-2 !text-[9px] transition-all delay-100 duration-[900ms] ease-out-lux md:translate-y-full md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">{t('prod.view')}<ArrowRight strokeWidth={1} className="h-3.5 w-3.5" /></span></div>
@@ -157,46 +150,57 @@ function Collection() {
 function Fragrances() {
   const { t, tr, fragrances, products } = useCMS(); const { go } = useRouter(); const [a, setA] = useState(0)
   const f = fragrances[a]
+  const product = products.find((p) => p.published && p.frag === f.id)
+  const mobileWrap = useRef<HTMLElement>(null)
+  const mobileStage = useRef<HTMLDivElement>(null)
+  const mobileTitle = useRef<HTMLDivElement>(null)
+  const mobileCopy = useRef<HTMLDivElement>(null)
+  const mobileImage = useRef<HTMLDivElement>(null)
+  const mobileIndex = useRef(-1)
+  useSmoothScroll((y) => {
+    const wrap = mobileWrap.current; const stage = mobileStage.current
+    if (!wrap || !stage || innerWidth >= 1024) return
+    const distance = Math.max(1, wrap.offsetHeight - innerHeight)
+    const progress = Math.min(0.999, Math.max(0, -wrap.getBoundingClientRect().top / distance))
+    const raw = progress * fragrances.length
+    const index = Math.min(fragrances.length - 1, Math.floor(raw))
+    const local = raw - index
+    if (index !== mobileIndex.current) { mobileIndex.current = index; setA(index) }
+    const drift = (0.5 - local) * 2
+    if (mobileTitle.current) mobileTitle.current.style.transform = `translate3d(0, ${(drift * 18).toFixed(2)}px, 0)`
+    if (mobileCopy.current) mobileCopy.current.style.transform = `translate3d(0, ${(drift * -28).toFixed(2)}px, 0)`
+    if (mobileImage.current) mobileImage.current.style.transform = `translate3d(0, ${(drift * 42).toFixed(2)}px, 0) scale(${1 + Math.abs(drift) * 0.025})`
+  })
   return (
     <>
-      <section className="relative lg:hidden" aria-labelledby="frag-t-mobile">
-        {fragrances.map((x, i) => {
-          const product = products.find((p) => p.published && p.frag === x.id)
-          return (
-            <article key={x.id} className="relative flex min-h-[100svh] snap-start flex-col justify-center overflow-hidden px-[max(1.25rem,var(--sal))] py-24" style={{ background: x.bg, color: x.ink }}>
-              <div className="pointer-events-none absolute inset-y-0 left-5 w-px opacity-20" style={{ background: x.ink }} />
-              <Parallax mobileOnly speed={-0.1} className="relative z-10">
-                {i === 0 && <h2 id="frag-t-mobile" className="eyebrow mb-8 flex items-center gap-3"><Sparkle />{t('frag.title')}</h2>}
-                <div className="flex items-baseline gap-5 border-b pb-4" style={{ borderColor: x.ink + '28' }}>
-                  <span className="eyebrow !text-[9px] opacity-60">{String(i + 1).padStart(2, '0')}</span>
-                  <h3 className="font-serif text-[clamp(2.7rem,13vw,4.4rem)] font-light italic leading-none">{tr(x.name)}</h3>
-                </div>
-              </Parallax>
-
-              <Parallax mobileOnly speed={0.07} className="relative z-10 ml-5 mt-7 border-l pl-5" >
-                <div style={{ borderColor: x.accent }}>
-                  <p className="eyebrow !text-[9px]" style={{ color: x.accent }}>{tr(x.notes)}</p>
-                  <p className="mt-4 max-w-sm font-serif text-xl font-light leading-snug">{tr(x.desc)}</p>
-                  <div className="mt-6"><TextLink onClick={() => go('/produtos?f=' + x.id)}>{t('frag.cta')}</TextLink></div>
-                </div>
-              </Parallax>
-
-              <Parallax mobileOnly speed={-0.16} className="relative z-0 mx-auto mt-12 w-[78%]">
-                <button type="button" onClick={() => product && go('/produto/' + product.id)} disabled={!product} className="group block w-full text-left disabled:pointer-events-none">
-                  <div className="arch relative h-[38svh] min-h-[260px] max-h-[360px] overflow-hidden border p-2" style={{ borderColor: x.accent + '70' }}>
-                    <img loading="lazy" src={product?.imgs[0] || x.img} alt={product ? tr(product.name) : tr(x.name)} className="arch h-full w-full object-cover transition-transform duration-[1400ms] ease-out-lux group-active:scale-105" />
-                    {product && <div className="absolute inset-x-2 bottom-2 bg-gradient-to-t from-soft/75 to-transparent px-4 pb-4 pt-14 text-cream"><p className="font-serif text-xl leading-tight">{tr(product.name)}</p><p className="mt-1 text-xs tabular-nums">{brl(product.promo ?? product.price)}</p></div>}
-                  </div>
-                </button>
-              </Parallax>
-
-              <div className="absolute bottom-7 right-5 flex items-center gap-3">
-                <span className="eyebrow !text-[8px] opacity-60">{String(i + 1).padStart(2, '0')} / {String(fragrances.length).padStart(2, '0')}</span>
-                <span className="h-px w-10 opacity-35" style={{ background: x.ink }} />
+      <section ref={mobileWrap} className="relative lg:hidden" style={{ height: `calc(${fragrances.length} * 100svh)` }} aria-labelledby="frag-t-mobile">
+        <div ref={mobileStage} className="sticky top-0 flex h-[100svh] min-h-[640px] flex-col justify-center overflow-hidden px-[max(1.25rem,var(--sal))] py-24 transition-colors duration-700" style={{ background: f.bg, color: f.ink }}>
+          <div className="pointer-events-none absolute inset-y-0 left-5 w-px opacity-20" style={{ background: f.ink }} />
+          <div ref={mobileTitle} className="relative z-10 transition-transform duration-200 ease-out">
+            <h2 id="frag-t-mobile" className="eyebrow mb-8 flex items-center gap-3"><Sparkle />{t('frag.title')}</h2>
+            <div key={f.id} className="mobile-fragrance-swap flex items-baseline gap-5 border-b pb-4" style={{ borderColor: f.ink + '28' }}>
+              <span className="eyebrow !text-[9px] opacity-60">{String(a + 1).padStart(2, '0')}</span>
+              <h3 key={f.id} className="font-serif text-[clamp(2.7rem,13vw,4.4rem)] font-light italic leading-[1.08]">{tr(f.name)}</h3>
+            </div>
+          </div>
+          <div ref={mobileCopy} className="relative z-10 ml-5 mt-7 border-l pl-5 transition-transform duration-200 ease-out" style={{ borderColor: f.accent }}>
+            <p className="eyebrow !text-[9px]" style={{ color: f.accent }}>{tr(f.notes)}</p>
+            <p key={f.id} className="mobile-fragrance-swap mt-4 max-w-sm font-serif text-xl font-light leading-snug">{tr(f.desc)}</p>
+            <div className="mt-6"><TextLink onClick={() => go('/produtos?f=' + f.id)}>{t('frag.cta')}</TextLink></div>
+          </div>
+          <div ref={mobileImage} className="relative z-0 mx-auto mt-12 w-[78%] transition-transform duration-200 ease-out">
+            <button type="button" onClick={() => product && go('/produto/' + product.id)} className="group block w-full text-left">
+              <div className="arch relative h-[38svh] min-h-[260px] max-h-[360px] overflow-hidden border p-2" style={{ borderColor: f.accent + '70' }}>
+                <img key={f.id} loading="lazy" src={product?.imgs[0] || f.img} alt={tr(product?.name || f.name)} className="arch h-full w-full object-cover transition-transform duration-[1400ms] ease-out-lux group-active:scale-105" />
+                {product && <div className="mobile-fragrance-swap absolute inset-x-2 bottom-2 bg-gradient-to-t from-soft/75 to-transparent px-4 pb-4 pt-14 text-cream"><p className="font-serif text-xl leading-tight">{tr(product.name)}</p><p className="mt-1 text-xs tabular-nums">{brl(product.promo ?? product.price)}</p></div>}
               </div>
-            </article>
-          )
-        })}
+            </button>
+          </div>
+          <div className="absolute bottom-7 right-5 flex items-center gap-3">
+            <span className="eyebrow !text-[8px] opacity-60">{String(a + 1).padStart(2, '0')} / {String(fragrances.length).padStart(2, '0')}</span>
+            <span className="h-px w-10 opacity-35" style={{ background: f.ink }} />
+          </div>
+        </div>
       </section>
 
       <section className="relative hidden overflow-hidden py-28 transition-colors duration-[1400ms] ease-out-lux lg:block" style={{ background: f.bg, color: f.ink }} aria-labelledby="frag-t">
@@ -235,15 +239,15 @@ function Why() {
   const { t } = useCMS()
   const icons = [Flame, PenTool, Gem, Hourglass]
   return (
-    <section className="py-20 md:py-28" aria-labelledby="why-t">
+    <section className="py-14 md:py-28" aria-labelledby="why-t">
       <Container>
-        <Reveal className="mb-12 text-center"><h2 id="why-t" className="font-serif text-[clamp(2.6rem,5vw,5rem)] font-light uppercase leading-none"><Lines lines={[t('why.title')]} /></h2></Reveal>
+        <Reveal className="mb-9 text-center md:mb-12"><h2 id="why-t" className="font-serif text-[clamp(2.6rem,5vw,5rem)] font-light uppercase leading-none"><Lines lines={[t('why.title')]} /></h2></Reveal>
         <Reveal className="grid grid-flow-dense border-t border-beige sm:grid-cols-2 lg:grid-cols-4">
           {icons.map((I, i) => (
-            <div key={i} className="fade-up group relative border-b border-beige px-6 py-12 sm:[&:nth-child(odd)]:border-r lg:border-r lg:last:border-r-0" style={{ transitionDelay: `${i * 0.1}s` }}>
+            <div key={i} className="fade-up group relative border-b border-beige px-6 py-9 md:py-12 sm:[&:nth-child(odd)]:border-r lg:border-r lg:last:border-r-0" style={{ transitionDelay: `${i * 0.1}s` }}>
               <span className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-gold transition-transform duration-[900ms] ease-lux group-hover:scale-x-100" />
               <I strokeWidth={0.75} className="h-9 w-9 text-gold transition-transform duration-[900ms] ease-out-lux group-hover:-translate-y-1" />
-              <h3 className="mt-10 font-serif text-3xl leading-tight">{t(`why.${i + 1}`)}</h3>
+              <h3 className="mt-7 font-serif text-3xl leading-tight md:mt-10">{t(`why.${i + 1}`)}</h3>
               <p className="mt-4 text-sm leading-relaxed text-taupe">{t(`why.${i + 1}d`)}</p>
             </div>
           ))}
@@ -257,17 +261,17 @@ function Why() {
 function Lifestyle() {
   const { t, assets: { living, bath, candleClose } } = useCMS()
   return (
-    <section className="relative h-[100svh] min-h-[720px] overflow-hidden bg-blush text-logo md:h-[130vh] md:min-h-[760px]" aria-labelledby="life-t">
-      <Parallax speed={0.06} className="absolute inset-[-10%_0]"><img loading="lazy" src={living} alt="Sala de estar clara e acolhedora" className="h-full w-full object-cover opacity-80 sepia-[0.04] saturate-[0.95] md:opacity-75" /></Parallax>
-      <div className="absolute inset-0 bg-gradient-to-b from-blush/68 via-blush/22 to-blush/78 md:bg-gradient-to-r md:from-blush/86 md:via-blush/36 md:to-blush/12" />
+    <section className="lifestyle-stage relative h-[100svh] min-h-[720px] overflow-hidden bg-blush text-logo md:h-[130vh] md:min-h-[760px]" aria-labelledby="life-t">
+      <Parallax speed={0.06} className="absolute inset-[-10%_0]"><img loading="lazy" src={living} alt="Sala de estar clara e acolhedora" className="h-full w-full object-cover opacity-76 sepia-[0.02] saturate-[.98] md:opacity-75" /></Parallax>
+      <div className="lifestyle-wash absolute inset-0 bg-gradient-to-b from-blush/68 via-blush/22 to-blush/78 md:bg-gradient-to-r md:from-blush/86 md:via-blush/36 md:to-blush/12" />
       <div className="absolute inset-x-0 top-0 h-px bg-gold/30" />
       <Parallax speed={0.16} className="absolute left-1/2 top-[10%] md:top-[18%]"><div className="arch h-[76svh] max-h-[650px] w-[64vw] max-w-[300px] -translate-x-1/2 border border-gold/45 md:h-[70vh] md:w-[34vw] md:max-w-none" /></Parallax>
-      <Parallax speed={0.24} className="absolute -bottom-[5%] -right-[5%] w-[52vw] max-w-[220px] md:bottom-[8%] md:right-[8%] md:w-[24vw] md:max-w-[380px]"><Reveal><div className="clip arch aspect-[3/4.4] overflow-hidden border border-blush bg-blush p-1.5 shadow-2xl shadow-logo/10"><img loading="lazy" src={bath} alt="Sabonete líquido Gramado Aroma no lavabo" className="arch h-full w-full object-cover" /></div></Reveal></Parallax>
+      <Parallax speed={0.18} className="lifestyle-product absolute -bottom-[2%] -right-[3%] w-[48vw] max-w-[220px] md:bottom-[8%] md:right-[8%] md:w-[24vw] md:max-w-[380px]"><Reveal><div className="clip arch aspect-[3/4.4] overflow-hidden border border-blush bg-blush p-1.5 shadow-2xl shadow-logo/10"><img loading="lazy" src={bath} alt="Sabonete líquido Gramado Aroma no lavabo" className="arch h-full w-full object-cover" /></div></Reveal></Parallax>
       <Parallax speed={0.28} className="absolute left-[6%] top-[14%] hidden w-[16vw] md:block"><Reveal><div className="clip aspect-square overflow-hidden" style={{ transitionDelay: '.2s' }}><img loading="lazy" src={candleClose} alt="" className="h-full w-full object-cover" /></div></Reveal></Parallax>
       <Parallax speed={-0.1} className="absolute inset-x-0 top-[27%] z-20 md:top-[40%]">
         <Reveal as="div" className="mx-auto max-w-[1600px] px-[max(1.25rem,var(--sal))] md:px-[max(2.5rem,var(--sar))]">
-          <p className="fade-up eyebrow mb-6 flex items-center gap-3 !text-[9px] text-gold"><Sparkle />{t('hero.label')}</p>
-          <h2 id="life-t" className="max-w-5xl font-serif text-[clamp(3rem,12vw,9.5rem)] font-light leading-[0.88] tracking-[-0.02em] text-logo"><Lines lines={[t('life.t1'), <em key="a" className="pl-[7vw] italic text-gold md:pl-[8vw]">{t('life.t2')}</em>]} /></h2>
+          <p className="lifestyle-eyebrow fade-up eyebrow mb-6 flex w-fit items-center gap-3 !text-[9px] text-gold"><Sparkle />{t('hero.label')}</p>
+          <h2 id="life-t" className="max-w-5xl font-serif text-[clamp(3rem,12vw,9.5rem)] font-light leading-[0.92] tracking-[-0.02em] text-logo"><Lines lines={[t('life.t1'), <em key="a" className="pl-[7vw] italic text-gold md:pl-[8vw]">{t('life.t2')}</em>]} /></h2>
           <p className="fade-up mt-7 max-w-[18rem] border-l border-gold pl-4 text-sm leading-relaxed text-logo/85 md:ml-[8vw] md:mt-8 md:max-w-xs">{t('life.body')}</p>
         </Reveal>
       </Parallax>
@@ -330,8 +334,8 @@ export function ReviewCarousel() {
         </div>
       </div>
       <div className="mt-10 flex items-center gap-4 sm:gap-6">
-        <button aria-label="Anterior" onClick={() => setI(clamp(i - 1))} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-beige transition-colors duration-500 hover:border-gold hover:text-gold active:bg-gold/10 sm:h-12 sm:w-12"><ArrowLeft strokeWidth={1} className="h-4 w-4" /></button>
-        <button aria-label="Próximo" onClick={() => setI(clamp(i + 1))} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-beige transition-colors duration-500 hover:border-gold hover:text-gold active:bg-gold/10 sm:h-12 sm:w-12"><ArrowRight strokeWidth={1} className="h-4 w-4" /></button>
+        <button type="button" aria-label="Anterior" onPointerDown={(e) => e.stopPropagation()} onPointerUp={(e) => e.stopPropagation()} onClick={() => { setDx(0); setI(clamp(i - 1)) }} className="relative z-10 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-beige transition-colors duration-500 hover:border-gold hover:text-gold active:bg-gold/10 sm:h-12 sm:w-12"><ArrowLeft strokeWidth={1} className="h-4 w-4" /></button>
+        <button type="button" aria-label="Próximo" onPointerDown={(e) => e.stopPropagation()} onPointerUp={(e) => e.stopPropagation()} onClick={() => { setDx(0); setI(clamp(i + 1)) }} className="relative z-10 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-beige transition-colors duration-500 hover:border-gold hover:text-gold active:bg-gold/10 sm:h-12 sm:w-12"><ArrowRight strokeWidth={1} className="h-4 w-4" /></button>
         <div className="flex flex-1 gap-2">{list.map((_, k) => <span key={k} className="relative h-px flex-1 bg-beige"><span className={`absolute inset-0 origin-left bg-gold transition-transform duration-[1200ms] ease-lux ${k === i ? 'scale-x-100' : 'scale-x-0'}`} /></span>)}</div>
         <span className="eyebrow !text-[10px] tabular-nums text-taupe">0{i + 1} / 0{n}</span>
       </div>
@@ -358,7 +362,7 @@ export function InstagramGrid() {
   const { t, posts, settings } = useCMS()
   const list = posts.filter((p) => p.featured).slice(0, 8)
   if (!list.length) return <p className="py-20 text-center text-taupe">Instagram indisponível no momento.</p>
-  const spans = ['md:col-span-2 md:row-span-2', '', 'md:row-span-2', '', '', 'md:col-span-2', '', '']
+  const spans = ['md:col-span-2 md:row-span-2', '', 'md:row-span-2', '', '', 'md:col-span-2', '', 'md:col-span-2']
   return (
     <section className="bg-cream py-20 md:py-28" aria-labelledby="ig-t">
       <Container>
@@ -377,12 +381,12 @@ export function InstagramGrid() {
 export function FinalCTA() {
   const { t, assets } = useCMS(); const { go } = useRouter()
   return (
-    <section className="relative flex min-h-[88svh] items-center overflow-hidden bg-blush text-logo md:min-h-[100dvh]">
-      <Parallax speed={0.12} className="absolute inset-[-12%_0]"><img loading="lazy" src={assets.candleMany} alt="" className="h-full w-full object-cover opacity-68 sepia-[0.04] saturate-[0.96]" /></Parallax>
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(248,242,238,.16),rgba(248,242,238,.52))]" />
+    <section className="final-cta relative flex min-h-[88svh] items-center overflow-hidden bg-blush text-logo md:min-h-[100dvh]">
+      <Parallax speed={0.12} className="absolute inset-[-12%_0]"><img loading="lazy" src={assets.candleMany} alt="" className="h-full w-full object-cover opacity-54 saturate-[.9] contrast-[1.04]" /></Parallax>
+      <div className="final-cta-wash absolute inset-0" />
       <Reveal className="relative mx-auto w-full max-w-6xl px-[max(1.25rem,var(--sal))] text-center">
         <Sparkle className="fade-up mx-auto mb-10 text-gold" />
-        <h2 className="font-serif text-[clamp(2.8rem,7.5vw,7.6rem)] font-light uppercase leading-[0.95]"><Lines lines={[t('cta.t1'), <em key="a" className="normal-case italic text-taupe">{t('cta.t2')}</em>, t('cta.t3')]} /></h2>
+        <h2 className="final-cta-title font-serif text-[clamp(2.8rem,7.5vw,7.6rem)] font-light uppercase leading-[0.95]"><Lines lines={[t('cta.t1'), <em key="a" className="normal-case italic text-taupe">{t('cta.t2')}</em>, t('cta.t3')]} /></h2>
         <div className="fade-up mt-14 flex justify-center" style={{ transitionDelay: '.4s' }}><ArrowBtn onClick={() => go('/produtos')} className="!border-logo !bg-logo">{t('cta.btn')}</ArrowBtn></div>
       </Reveal>
     </section>
