@@ -48,19 +48,19 @@ function ScrubText({ text, className = '' }: { text: string; className?: string 
 function Story() {
   const { t, assets } = useCMS()
   return (
-    <section className="relative overflow-hidden pb-16 pt-14 md:pb-40 md:pt-28" aria-labelledby="story-t">
+    <section className="relative z-10 flex min-h-fit flex-col justify-center py-12 md:py-20" aria-labelledby="story-t">
       <Container className="grid gap-10 lg:grid-cols-12 lg:gap-16">
         <Reveal className="lg:col-span-7">
           <h2 id="story-t" className="font-serif text-[clamp(2.8rem,6vw,6rem)] font-light uppercase leading-[0.95] tracking-[0.01em] text-soft"><Lines lines={[t('story.t1'), <em key="a" className="normal-case italic text-gold">{t('story.t2')}</em>]} /></h2>
           <ScrubText text={t('story.body')} className="story-body mt-10 max-w-2xl font-serif text-[clamp(1.4rem,2.2vw,2.1rem)] font-normal leading-[1.35] text-soft md:mt-14" />
           <div className="fade-up mt-10 flex items-center gap-5 md:mt-14"><span className="h-px w-16 bg-gold" /><span className="font-script text-3xl text-gold">{t('story.quote')}</span></div>
         </Reveal>
-        <Reveal className="relative lg:col-span-5">
+        <Reveal className="relative flex flex-col items-center justify-center lg:col-span-5">
           {/* Sized to roughly match the text column. It used to be aspect-3/4.3
               at w-85% plus mt-24, which rendered ~740px tall against ~500px of
               copy and left a large dead zone under the quote. */}
           <div className="clip arch relative mx-auto aspect-[4/5] w-[76%] overflow-hidden lg:mt-8"><Parallax speed={0.12} scale={1.2} className="absolute inset-0"><img loading="lazy" src={assets.diffuser} alt="Difusor de aromas Gramado Aroma" className="h-full w-full object-cover" /></Parallax></div>
-          <Parallax speed={-0.18} className="absolute -bottom-10 -left-4 w-[42%]"><div className="clip aspect-square overflow-hidden border-8 border-ivory" style={{ transitionDelay: '.3s' }}><img loading="lazy" src={assets.candleTea} alt="" className="h-full w-full object-cover" /></div></Parallax>
+          <Parallax speed={-0.18} className="relative -mt-[15%] -ml-[25%] w-[42%]"><div className="clip aspect-square overflow-hidden border-8 border-ivory bg-ivory" style={{ transitionDelay: '.3s' }}><img loading="lazy" src={assets.candleTea} alt="" className="h-full w-full object-cover" /></div></Parallax>
           <div className="arch pointer-events-none absolute left-[3%] top-[-3%] aspect-[4/5] w-[80%] border border-gold/40 lg:top-[calc(3rem-3%)] lg:ml-[4.5%]" />
         </Reveal>
       </Container>
@@ -110,7 +110,8 @@ function Collection() {
   })
   return (
     <section ref={wrap} className="relative bg-mist" aria-labelledby="col-t">
-      <div className="overflow-hidden py-28 lg:sticky lg:top-[var(--hdr)] lg:flex lg:h-[calc(100dvh-var(--hdr))] lg:flex-col lg:justify-center lg:py-0">
+      <div className="overflow-hidden py-28 lg:sticky lg:top-[var(--hdr)] lg:flex lg:h-[calc(100dvh-var(--hdr))] lg:flex-col lg:py-0">
+        <div className="w-full lg:my-auto lg:py-8">
         <Parallax mobileOnly speed={-0.055} className="collection-heading-plane">
           <Container className="mb-10 flex flex-col gap-5 md:mb-14 md:flex-row md:items-end md:justify-between">
             <Reveal><h2 id="col-t" className="font-serif text-[clamp(2.65rem,6vw,6rem)] font-light uppercase leading-[0.95]"><Lines lines={[t('col.title')]} /></h2></Reveal>
@@ -125,14 +126,14 @@ function Collection() {
           {list.map((p, i) => {
             const f = fragrances.find((x) => x.id === p.frag)!
             return (
-              <button key={p.id} onClick={() => go('/produto/' + p.id)} data-cursor="view" data-cursor-label={t('prod.view')} className="group relative w-[82vw] shrink-0 snap-center text-left md:w-[30vw] lg:w-[28vw]">
+              <button key={p.id} onClick={() => go('/produto/' + p.id)} data-cursor="view" data-cursor-label={t('prod.view')} className="group relative w-[82vw] shrink-0 snap-center text-left md:w-[30vw] lg:w-[min(28vw,45vh)]">
                 <div className="relative aspect-[4/5] overflow-hidden">
                   <img loading="lazy" src={p.imgs[0]} alt={tr(p.name)} className="h-full w-full scale-[1.08] object-cover transition-transform duration-[1600ms] ease-out-lux group-hover:translate-x-[-2%] group-hover:scale-[1.14]" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-soft/70 via-transparent opacity-60 transition-opacity duration-700 group-hover:opacity-100" />
-                  <div className="collection-card-copy absolute inset-x-0 bottom-0 px-6 pb-6 pt-16 text-cream">
-                    <p className="eyebrow mb-2 !text-[9px] text-gold-2">{tr(f.name)} · {p.size}</p>
-                    <p className="overflow-hidden font-serif text-[clamp(1.6rem,2.4vw,2.6rem)] leading-[1.02]"><span className="block transition-transform duration-[900ms] ease-out-lux md:translate-y-2 md:group-hover:translate-y-0">{tr(p.name)}</span></p>
-                    <div className="mt-3 flex items-center justify-between overflow-hidden"><span className="block text-sm tabular-nums transition-all duration-[900ms] ease-out-lux md:translate-y-full md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">{brl(p.price)}</span><span className="eyebrow flex items-center gap-2 !text-[9px] transition-all delay-100 duration-[900ms] ease-out-lux md:translate-y-full md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">{t('prod.view')}<ArrowRight strokeWidth={1} className="h-3.5 w-3.5" /></span></div>
+                  <div className="absolute inset-x-0 bottom-0 h-[65%] bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-90 transition-opacity duration-700 group-hover:opacity-100" />
+                  <div className="absolute inset-x-0 bottom-0 p-4 pb-6 pt-16 text-white">
+                    <p className="eyebrow mb-2 !text-[9px] font-semibold text-gold-2">{tr(f.name)} · {p.size}</p>
+                    <p className="overflow-hidden py-1 font-serif text-[clamp(1.6rem,2.4vw,2.6rem)] font-medium leading-[1.02]"><span className="block transition-transform duration-[900ms] ease-out-lux md:translate-y-2 md:group-hover:translate-y-0">{tr(p.name)}</span></p>
+                    <div className="mt-3 flex items-center justify-between overflow-hidden py-1"><span className="block text-sm tabular-nums font-semibold transition-all duration-[900ms] ease-out-lux md:translate-y-full md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">{brl(p.price)}</span><span className="eyebrow flex items-center gap-2 !text-[9px] font-semibold transition-all delay-100 duration-[900ms] ease-out-lux md:translate-y-full md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">{t('prod.view')}<ArrowRight strokeWidth={1} className="h-3.5 w-3.5" /></span></div>
                   </div>
                 </div>
                 <span className="eyebrow mt-4 block !text-[9px] text-taupe">0{i + 1} / 0{list.length}</span>
@@ -142,6 +143,7 @@ function Collection() {
           <div className="flex w-[60vw] shrink-0 items-center justify-center md:w-[24vw]"><ArrowBtn onClick={() => go('/produtos')}>{t('cta.btn')}</ArrowBtn></div>
         </div>
         <Container className="mt-10 hidden lg:block"><div className="h-px bg-beige"><div ref={bar} className="h-px origin-left scale-x-0 bg-gold" /></div></Container>
+        </div>
       </div>
     </section>
   )
