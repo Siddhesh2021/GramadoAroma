@@ -45,6 +45,21 @@ function ScrubText({ text, className = '' }: { text: string; className?: string 
   return <p className={className}>{text}</p>
 }
 
+/* Fragrance main image: animates the <img> itself inside its (static, overflow-hidden)
+   arch/frame — opacity 0 + translateY(30px)/scale(1.04) → visible, 1000ms ease-out-lux.
+   Self-observes via IntersectionObserver so every CMS-driven fragrance (present and
+   future) animates on scroll entrance, and remounts (key change) replay it. */
+function FragImg({ src, alt, className = '' }: { src: string; alt: string; className?: string }) {
+  const ref = useRef<HTMLImageElement>(null)
+  useEffect(() => {
+    const el = ref.current!
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { el.classList.add('in'); io.disconnect() } }, { threshold: 0.2 })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+  return <img ref={ref} loading="lazy" src={src} alt={alt} className={`frag-image-reveal ${className}`} />
+}
+
 function Story() {
   const { t, assets } = useCMS()
   return (
@@ -193,7 +208,7 @@ function Fragrances() {
           <div ref={mobileImage} className="relative z-0 mx-auto mt-12 w-[78%] transition-transform duration-200 ease-out">
             <button type="button" onClick={() => product && go('/produto/' + product.id)} className="group block w-full text-left">
               <div className="arch relative h-[38svh] min-h-[260px] max-h-[360px] overflow-hidden border p-2" style={{ borderColor: f.accent + '70' }}>
-                <img key={f.id} loading="lazy" src={product?.imgs[0] || f.img} alt={tr(product?.name || f.name)} className="arch h-full w-full object-cover transition-transform duration-[1400ms] ease-out-lux group-active:scale-105" />
+                <FragImg key={f.id} src={product?.imgs[0] || f.img} alt={tr(product?.name || f.name)} className="arch h-full w-full object-cover group-active:scale-105" />
                 {product && <div className="mobile-fragrance-swap absolute inset-x-2 bottom-2 bg-gradient-to-t from-soft/75 to-transparent px-4 pb-4 pt-14 text-cream"><p className="font-serif text-xl leading-tight">{tr(product.name)}</p><p className="mt-1 text-xs tabular-nums">{brl(product.promo ?? product.price)}</p></div>}
               </div>
             </button>
@@ -219,7 +234,7 @@ function Fragrances() {
             </div>
             <div className="relative lg:col-span-4">
               <div className="arch relative mx-auto aspect-[3/4.2] w-full overflow-hidden">
-                {fragrances.map((x, i) => <img key={x.id} loading="lazy" src={x.img} alt={tr(x.name)} className={`absolute inset-0 h-full w-full object-cover transition-all duration-[1400ms] ease-lux ${i === a ? 'scale-100 opacity-100 [clip-path:inset(0_0_0_0)]' : 'scale-110 opacity-0 [clip-path:inset(0_0_100%_0)]'}`} />)}
+                {fragrances.map((x, i) => <FragImg key={x.id} src={x.img} alt={tr(x.name)} className={`absolute inset-0 h-full w-full object-cover ${i === a ? 'scale-100 opacity-100 [clip-path:inset(0_0_0_0)]' : 'scale-110 opacity-0 [clip-path:inset(0_0_100%_0)]'}`} />)}
               </div>
               <div className="arch pointer-events-none absolute inset-x-[-1rem] -inset-y-4 border transition-colors duration-1000" style={{ borderColor: f.accent + '80' }} />
             </div>
