@@ -40,7 +40,7 @@ function QuickView({ p, onClose }: { p: Product | null; onClose: () => void }) {
     <div className={`fixed inset-0 z-[66] flex items-center justify-center p-4 ${p ? '' : 'pointer-events-none'}`} role="dialog" aria-modal="true" aria-hidden={!p}>
       <div onClick={onClose} className={`absolute inset-0 bg-soft/50 transition-opacity duration-700 ${p ? 'opacity-100' : 'opacity-0'}`} />
       {q && <div className={`relative grid w-full max-w-4xl bg-cream transition-all duration-[1000ms] ease-lux md:grid-cols-2 ${p ? '[clip-path:inset(0_0_0_0)]' : '[clip-path:inset(50%_0_50%_0)]'}`}>
-        <img src={q.imgs[0]} alt={tr(q.name)} className="aspect-[4/5] h-full w-full object-cover max-md:aspect-[4/3]" />
+        <img src={q.imgs[0]} alt={tr(q.name)} className="aspect-[4/5] h-full w-full object-cover" />
         <div className="flex flex-col p-8 md:p-12">
           <button onClick={onClose} aria-label={t('nav.close')} className="tap -mr-2 self-end p-2 transition-transform duration-500 hover:rotate-90 active:opacity-60"><X strokeWidth={1} className="h-5 w-5" /></button>
           <p className="eyebrow mt-4 !text-[10px] text-gold">{tr(fragrances.find((f) => f.id === q.frag)!.name)} · {q.size}</p>
@@ -142,8 +142,8 @@ export function About() {
   return (
     <>
       <section className="relative flex h-[100dvh] min-h-[620px] items-end overflow-hidden bg-blush text-logo">
-        <Parallax speed={-0.25} className="absolute inset-[-10%_0]"><img src={assets.living} alt="" className="h-full w-full object-cover opacity-55 sepia-[0.1] saturate-[1.08]" /></Parallax>
-        <div className="absolute inset-0 bg-gradient-to-t from-blush/85 via-blush/35 to-blush/5" />
+        <Parallax speed={-0.18} className="absolute inset-[-8%_0]"><img src={assets.living} alt="" className="h-full w-full object-cover opacity-72 sepia-[0.04] saturate-[0.95]" /></Parallax>
+        <div className="absolute inset-0 bg-gradient-to-t from-blush/72 via-blush/24 to-blush/8" />
         <Reveal className="relative w-full pb-20" threshold={0}><Container>
           <h1 className="font-serif text-[clamp(3rem,9vw,9rem)] font-light uppercase leading-[0.9]"><Lines delay={0.2} lines={[t('about.t1'), <em key="a" className="normal-case italic text-taupe">{t('about.t2')}</em>]} /></h1>
           <p className="fade-up mt-10 max-w-md font-serif text-2xl font-light italic text-logo/80" style={{ transitionDelay: '.5s' }}>{t('about.sub')}</p>
