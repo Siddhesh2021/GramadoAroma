@@ -20,16 +20,16 @@ const PageHero = ({ eyebrow, lines, sub, children }: { eyebrow?: string; lines: 
 export const Crumbs = ({ items }: { items: { label: string; to?: string }[] }) => {
   const { go } = useRouter()
   return (
-    <nav aria-label="Breadcrumb" className="eyebrow flex flex-wrap items-center gap-2 !text-[9px] text-taupe">
+    <nav aria-label="Breadcrumb" className="eyebrow flex flex-wrap items-center gap-2 !text-[10px] text-taupe">
       <ol className="flex flex-wrap items-center gap-2" itemScope itemType="https://schema.org/BreadcrumbList">
-        {items.map((c, i) => <li key={i} className="flex items-center gap-2" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">{i > 0 && <ChevronRight strokeWidth={1} className="h-3 w-3" />}{c.to ? <button onClick={() => go(c.to!)} className="hover:text-soft" itemProp="name">{c.label}</button> : <span className="text-soft" itemProp="name" aria-current="page">{c.label}</span>}<meta itemProp="position" content={String(i + 1)} /></li>)}
+        {items.map((c, i) => <li key={i} className="flex items-center gap-2" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">{i > 0 && <ChevronRight strokeWidth={1} className="h-3 w-3" />}{c.to ? <button onClick={() => go(c.to!)} className="tap-y -ml-1 px-1 hover:text-soft active:opacity-60" itemProp="name">{c.label}</button> : <span className="px-1 text-soft" itemProp="name" aria-current="page">{c.label}</span>}<meta itemProp="position" content={String(i + 1)} /></li>)}
       </ol>
     </nav>
   )
 }
 
 const Chip = ({ on, children, onClick }: { on: boolean; children: ReactNode; onClick: () => void }) => (
-  <button aria-pressed={on} onClick={onClick} className={`eyebrow relative whitespace-nowrap px-1 py-2 !text-[10px] transition-colors duration-500 ${on ? 'text-soft' : 'text-taupe hover:text-soft'}`}>{children}<span className={`absolute bottom-0 left-0 h-px w-full origin-left bg-gold transition-transform duration-700 ease-lux ${on ? 'scale-x-100' : 'scale-x-0'}`} /></button>
+  <button aria-pressed={on} onClick={onClick} className={`eyebrow relative whitespace-nowrap px-1.5 py-3 !text-[10px] transition-colors duration-500 active:opacity-60 ${on ? 'text-soft' : 'text-taupe hover:text-soft'}`}>{children}<span className={`absolute bottom-2 left-1.5 right-1.5 h-px origin-left bg-gold transition-transform duration-700 ease-lux ${on ? 'scale-x-100' : 'scale-x-0'}`} /></button>
 )
 
 function QuickView({ p, onClose }: { p: Product | null; onClose: () => void }) {
@@ -42,7 +42,7 @@ function QuickView({ p, onClose }: { p: Product | null; onClose: () => void }) {
       {q && <div className={`relative grid w-full max-w-4xl bg-cream transition-all duration-[1000ms] ease-lux md:grid-cols-2 ${p ? '[clip-path:inset(0_0_0_0)]' : '[clip-path:inset(50%_0_50%_0)]'}`}>
         <img src={q.imgs[0]} alt={tr(q.name)} className="aspect-[4/5] h-full w-full object-cover max-md:aspect-[4/3]" />
         <div className="flex flex-col p-8 md:p-12">
-          <button onClick={onClose} aria-label={t('nav.close')} className="self-end transition-transform duration-500 hover:rotate-90"><X strokeWidth={1} className="h-5 w-5" /></button>
+          <button onClick={onClose} aria-label={t('nav.close')} className="tap -mr-2 self-end p-2 transition-transform duration-500 hover:rotate-90 active:opacity-60"><X strokeWidth={1} className="h-5 w-5" /></button>
           <p className="eyebrow mt-4 !text-[10px] text-gold">{tr(fragrances.find((f) => f.id === q.frag)!.name)} · {q.size}</p>
           <h3 className="mt-3 font-serif text-4xl leading-tight">{tr(q.name)}</h3>
           <p className="mt-4 text-sm leading-relaxed text-taupe">{tr(q.desc)}</p>
@@ -65,10 +65,10 @@ export function Products({ query }: { query: string }) {
   return (
     <>
       <PageHero eyebrow={`${products.filter((p) => p.published).length} ${t('prod.count')}`} lines={[t('prod.title')]} sub={t('prod.sub')} />
-      <div className="sticky top-[60px] z-30 border-y border-beige bg-ivory/90 backdrop-blur-md">
-        <Container className="flex flex-col gap-2 py-3 md:flex-row md:items-center md:justify-between">
-          <div className="-mx-1 flex gap-6 overflow-x-auto [scrollbar-width:none]"><Chip on={cat === 'all'} onClick={() => setCat('all')}>{t('prod.all')}</Chip>{categories.map((c) => <Chip key={c.id} on={cat === c.id} onClick={() => setCat(c.id)}>{tr(c.name)}</Chip>)}</div>
-          <div className="-mx-1 flex items-center gap-5 overflow-x-auto [scrollbar-width:none]"><Chip on={frag === 'all'} onClick={() => setFrag('all')}>{t('prod.allFrag')}</Chip>{fragrances.map((f) => <Chip key={f.id} on={frag === f.id} onClick={() => setFrag(f.id)}><span className="mr-2 inline-block h-1.5 w-1.5 rounded-full align-middle" style={{ background: f.accent }} />{tr(f.name)}</Chip>)}</div>
+      <div className="sticky top-[var(--hdr,60px)] z-30 border-y border-beige bg-ivory/90 backdrop-blur-md">
+        <Container className="flex flex-col gap-1 py-2 md:flex-row md:items-center md:justify-between md:py-3">
+          <div className="-mx-1.5 flex gap-5 overflow-x-auto px-1.5 [scrollbar-width:none]"><Chip on={cat === 'all'} onClick={() => setCat('all')}>{t('prod.all')}</Chip>{categories.map((c) => <Chip key={c.id} on={cat === c.id} onClick={() => setCat(c.id)}>{tr(c.name)}</Chip>)}</div>
+          <div className="-mx-1.5 flex items-center gap-4 overflow-x-auto px-1.5 [scrollbar-width:none]"><Chip on={frag === 'all'} onClick={() => setFrag('all')}>{t('prod.allFrag')}</Chip>{fragrances.map((f) => <Chip key={f.id} on={frag === f.id} onClick={() => setFrag(f.id)}><span className="mr-2 inline-block h-1.5 w-1.5 rounded-full align-middle" style={{ background: f.accent }} />{tr(f.name)}</Chip>)}</div>
         </Container>
       </div>
       <Container className="py-20 md:py-28">
@@ -101,7 +101,7 @@ export function ProductDetail({ id }: { id: string }) {
       <Container className="pt-28 md:pt-32"><Crumbs items={[{ label: t('prod.title'), to: '/produtos' }, { label: tr(categories.find((c) => c.id === p.cat)?.name || { pt: p.cat, en: p.cat }), to: '/produtos' }, { label: tr(p.name) }]} /></Container>
       <Container className="grid gap-12 pb-28 pt-10 lg:grid-cols-12 lg:gap-20">
         <div className="flex flex-col-reverse gap-4 md:flex-row lg:col-span-7">
-          <div className="flex gap-3 md:flex-col">{p.imgs.map((s, i) => <button key={i} onClick={() => setImg(i)} aria-label={`Imagem ${i + 1}`} className={`relative h-24 w-20 overflow-hidden transition-opacity duration-500 ${i === img ? '' : 'opacity-45 hover:opacity-100'}`}><img src={s} alt="" className="h-full w-full object-cover" /><span className={`absolute inset-x-0 bottom-0 h-px bg-gold transition-transform duration-700 ${i === img ? 'scale-x-100' : 'scale-x-0'}`} /></button>)}</div>
+          <div className="flex gap-3 md:flex-col">{p.imgs.map((s, i) => <button key={i} onClick={() => setImg(i)} aria-label={`Imagem ${i + 1}`} aria-current={i === img} className={`relative h-24 w-20 shrink-0 overflow-hidden transition-opacity duration-500 active:opacity-100 ${i === img ? '' : 'opacity-45 hover:opacity-100'}`}><img src={s} alt="" className="h-full w-full object-cover" /><span className={`absolute inset-x-0 bottom-0 h-px bg-gold transition-transform duration-700 ${i === img ? 'scale-x-100' : 'scale-x-0'}`} /></button>)}</div>
           <Reveal className="clip relative flex-1 overflow-hidden bg-mist" threshold={0}>
             <div className="relative aspect-[4/5]" data-cursor="view" data-cursor-label="Zoom" onMouseMove={(e) => { const r = e.currentTarget.getBoundingClientRect(); setZoom({ x: ((e.clientX - r.left) / r.width) * 100, y: ((e.clientY - r.top) / r.height) * 100 }) }} onMouseLeave={() => setZoom(null)}>
               {p.imgs.map((s, i) => <img key={i} src={s} alt={i === 0 ? tr(p.name) : ''} className={`absolute inset-0 h-full w-full object-cover transition-[opacity,clip-path,transform] duration-[1200ms] ease-lux ${i === img ? 'opacity-100 [clip-path:inset(0_0_0_0)]' : 'opacity-0 [clip-path:inset(0_0_0_100%)]'}`} style={i === img && zoom ? { transform: 'scale(1.8)', transformOrigin: `${zoom.x}% ${zoom.y}%`, transitionDuration: '600ms' } : undefined} />)}
@@ -127,7 +127,7 @@ export function ProductDetail({ id }: { id: string }) {
                 <div className={`grid transition-[grid-template-rows] duration-700 ease-lux ${tab === i ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}><p className="overflow-hidden text-sm leading-relaxed text-taupe"><span className="block pb-6">{b}</span></p></div>
               </div>
             ))}
-            <p className="mt-4 text-[11px] text-taupe">SKU {p.sku}</p>
+            <p className="mt-4 text-xs text-taupe">SKU {p.sku}</p>
           </div>
         </Reveal>
       </Container>
@@ -167,7 +167,19 @@ export function About() {
           </div>
         </Container>
       </section>
-      <section className="border-t border-beige py-32 text-center"><Reveal><p className="font-serif text-[clamp(2.4rem,6vw,6rem)] font-light italic"><Lines lines={[t('about.cta')]} /></p><div className="fade-up mt-10 flex justify-center"><ArrowBtn onClick={() => go('/contato')}>{t('about.btn')}</ArrowBtn></div></Reveal></section>
+      <section className="border-t border-beige py-24 text-center">
+        <Reveal>
+          <p className="font-serif text-[clamp(2.4rem,6vw,6rem)] font-light italic"><Lines lines={[t('about.cta')]} /></p>
+          <div className="fade-up mt-10 flex flex-wrap items-center justify-center gap-8">
+            <ArrowBtn onClick={() => go('/contato')}>{t('about.btn')}</ArrowBtn>
+            {/* go() routes through the hash router, so this lands on /#/admin
+                and keeps the page-transition curtain instead of reloading. */}
+            <button onClick={() => go('/admin')} className="eyebrow tap-y flex items-center gap-3 py-2 text-taupe transition-colors duration-500 hover:text-soft active:opacity-60">
+              <Sparkle />{t('about.admin')}
+            </button>
+          </div>
+        </Reveal>
+      </section>
     </>
   )
 }
@@ -185,16 +197,16 @@ export function ReviewsPage() {
           <div><p className="font-serif text-7xl font-light leading-none">{approved.length}</p><p className="eyebrow mt-3 !text-[9px] text-taupe">{t('reviews.total')}</p></div>
         </div>
       </PageHero>
-      <Container className="flex gap-6 overflow-x-auto border-y border-beige py-3 [scrollbar-width:none]"><Chip on={cat === 'all'} onClick={() => setCat('all')}>{t('prod.all')}</Chip>{categories.slice(0, 3).map((c) => <Chip key={c.id} on={cat === c.id} onClick={() => setCat(c.id)}>{tr(c.name)}</Chip>)}</Container>
+      <Container className="flex gap-5 overflow-x-auto border-y border-beige py-2 [scrollbar-width:none]"><Chip on={cat === 'all'} onClick={() => setCat('all')}>{t('prod.all')}</Chip>{categories.slice(0, 3).map((c) => <Chip key={c.id} on={cat === c.id} onClick={() => setCat(c.id)}>{tr(c.name)}</Chip>)}</Container>
       <Container className="py-20 md:py-28">
         {list.length === 0 ? <p className="py-20 text-center font-serif text-3xl text-taupe">{t('reviews.empty')}</p> : (
           <div key={cat} className="columns-1 gap-8 md:columns-2 lg:columns-3">
             {list.map((r) => { const p = products.find((x) => x.id === r.product); return (
               <Reveal key={r.id} as="article" className="fade-up mb-8 break-inside-avoid border border-beige bg-cream p-8">
                 {r.photo && <img loading="lazy" src={r.photo} alt="" className="mb-6 aspect-[4/3] w-full object-cover" />}
-                <div className="flex items-center justify-between"><Stars n={r.rating} /><time className="text-[11px] text-taupe" dateTime={r.date}>{new Date(r.date).toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' })}</time></div>
+                <div className="flex items-center justify-between"><Stars n={r.rating} /><time className="text-xs text-taupe" dateTime={r.date}>{new Date(r.date).toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' })}</time></div>
                 <p className="mt-6 font-serif text-2xl font-light italic leading-snug">“{tr(r.text)}”</p>
-                <div className="mt-8 flex items-end justify-between gap-4 border-t border-beige pt-5"><div><p className="eyebrow !text-[10px]">{r.name}</p>{p && <p className="mt-1 text-xs text-taupe">{tr(p.name)}</p>}</div>{p && <button onClick={() => go('/produto/' + p.id)} className="eyebrow !text-[9px] text-gold hover:text-soft">{t('reviews.see')}</button>}</div>
+                <div className="mt-8 flex items-end justify-between gap-4 border-t border-beige pt-5"><div><p className="eyebrow !text-[10px]">{r.name}</p>{p && <p className="mt-1 text-xs text-taupe">{tr(p.name)}</p>}</div>{p && <button onClick={() => go('/produto/' + p.id)} className="eyebrow tap-y shrink-0 !text-[10px] text-gold hover:text-soft active:opacity-60">{t('reviews.see')}</button>}</div>
               </Reveal>) })}
           </div>
         )}
@@ -220,7 +232,7 @@ export function Contact() {
       <PageHero lines={[t('contact.t1'), <em key="a" className="normal-case italic text-gold">{t('contact.t2')}</em>]} sub={t('contact.sub')} />
       <Container className="grid gap-20 pb-28 lg:grid-cols-12">
         <Reveal className="grid gap-px self-start bg-beige sm:grid-cols-2 lg:col-span-5 lg:grid-cols-1 xl:grid-cols-2">
-          {info.map(([I, l, v, href], i) => { const inner = <><I strokeWidth={0.8} className="h-5 w-5 text-gold" /><p className="eyebrow mt-6 !text-[9px] text-taupe">{l}</p><p className="mt-2 break-words font-serif text-xl">{v}</p></>; return href ? <a key={i} href={href} target="_blank" rel="noreferrer" className="fade-up group bg-ivory p-7 transition-colors duration-500 hover:bg-cream" style={{ transitionDelay: `${i * 0.06}s` }}>{inner}</a> : <div key={i} className="fade-up bg-ivory p-7" style={{ transitionDelay: `${i * 0.06}s` }}>{inner}</div> })}
+          {info.map(([I, l, v, href], i) => { const inner = <><I strokeWidth={0.8} className="h-5 w-5 text-gold" /><p className="eyebrow mt-6 !text-[10px] text-taupe">{l}</p><p className="mt-2 break-words font-serif text-xl">{v}</p></>; return href ? <a key={i} href={href} target="_blank" rel="noreferrer" className="fade-up group flex min-h-[112px] flex-col justify-between bg-ivory p-7 transition-colors duration-500 hover:bg-cream active:bg-cream" style={{ transitionDelay: `${i * 0.06}s` }}>{inner}</a> : <div key={i} className="fade-up flex min-h-[112px] flex-col justify-between bg-ivory p-7" style={{ transitionDelay: `${i * 0.06}s` }}>{inner}</div> })}
         </Reveal>
         <Reveal className="lg:col-span-7">
           {state === 'ok' ? <div className="flex h-full flex-col items-start justify-center"><Sparkle className="text-gold" /><p className="mt-6 font-serif text-4xl">{t('contact.sent')}</p></div> : (
@@ -245,7 +257,7 @@ export function Contact() {
 export function NotFound() {
   const { t } = useCMS(); const { go } = useRouter()
   return (
-    <Reveal className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden px-5 text-center" threshold={0}>
+    <Reveal className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden px-[max(1.25rem,var(--sal))] text-center" threshold={0}>
       <div className="arch absolute top-1/2 h-[70vh] w-[40vh] -translate-y-1/2 border border-gold/30" />
       <p className="fade-up font-script text-[clamp(7rem,20vw,16rem)] leading-none text-gold/70">404</p>
       <h1 className="font-serif text-[clamp(2.2rem,5vw,4.5rem)] font-light"><Lines lines={[t('404.title')]} delay={0.2} /></h1>

@@ -1,10 +1,10 @@
-import { useRef, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { ArrowLeft, ArrowRight, Flame, PenTool, Gem, Hourglass } from 'lucide-react'
 import { useCMS, brl } from './cms'
 import { Parallax, Reveal, Lines, useRouter, useSmoothScroll } from './motion'
 import { ArrowBtn, TextLink, Sparkle, Botanical, Stars, IgTile } from './ui'
 
-export const Container = ({ children, className = '' }: { children: ReactNode; className?: string }) => <div className={`mx-auto max-w-[1600px] px-5 md:px-10 ${className}`}>{children}</div>
+export const Container = ({ children, className = '' }: { children: ReactNode; className?: string }) => <div className={`mx-auto max-w-[1600px] px-[max(1.25rem,var(--sal))] md:px-[max(2.5rem,var(--sar))] ${className}`}>{children}</div>
 
 function Hero({ ready }: { ready: boolean }) {
   const { t, assets } = useCMS(); const { go } = useRouter()
@@ -55,7 +55,7 @@ function ScrubText({ text, className = '' }: { text: string; className?: string 
 function Story() {
   const { t, assets } = useCMS()
   return (
-    <section className="relative overflow-hidden py-32 md:py-48" aria-labelledby="story-t">
+    <section className="relative overflow-hidden pb-28 pt-20 md:pb-40 md:pt-28" aria-labelledby="story-t">
       <Container className="grid gap-16 lg:grid-cols-12">
         <Reveal className="lg:col-span-7">
           <h2 id="story-t" className="font-serif text-[clamp(2.8rem,6vw,6rem)] font-light uppercase leading-[0.95] tracking-[0.01em] text-soft"><Lines lines={[t('story.t1'), <em key="a" className="normal-case italic text-gold">{t('story.t2')}</em>]} /></h2>
@@ -63,9 +63,12 @@ function Story() {
           <div className="fade-up mt-14 flex items-center gap-5"><span className="h-px w-16 bg-gold" /><span className="font-script text-3xl text-gold">{t('story.quote')}</span></div>
         </Reveal>
         <Reveal className="relative lg:col-span-5">
-          <div className="clip arch relative mx-auto aspect-[3/4.3] w-[85%] overflow-hidden lg:mt-24"><Parallax speed={0.12} scale={1.2} className="absolute inset-0"><img loading="lazy" src={assets.diffuser} alt="Difusor de aromas Gramado Aroma" className="h-full w-full object-cover" /></Parallax></div>
+          {/* Sized to roughly match the text column. It used to be aspect-3/4.3
+              at w-85% plus mt-24, which rendered ~740px tall against ~500px of
+              copy and left a large dead zone under the quote. */}
+          <div className="clip arch relative mx-auto aspect-[4/5] w-[80%] overflow-hidden lg:mt-8"><Parallax speed={0.12} scale={1.2} className="absolute inset-0"><img loading="lazy" src={assets.diffuser} alt="Difusor de aromas Gramado Aroma" className="h-full w-full object-cover" /></Parallax></div>
           <Parallax speed={-0.18} className="absolute -bottom-10 -left-4 w-[42%]"><div className="clip aspect-square overflow-hidden border-8 border-ivory" style={{ transitionDelay: '.3s' }}><img loading="lazy" src={assets.candleTea} alt="" className="h-full w-full object-cover" /></div></Parallax>
-          <div className="arch pointer-events-none absolute left-[3%] top-[-3%] aspect-[3/4.3] w-[85%] border border-gold/40 lg:top-[calc(6rem-3%)] lg:ml-[4.5%]" />
+          <div className="arch pointer-events-none absolute left-[3%] top-[-3%] aspect-[4/5] w-[80%] border border-gold/40 lg:top-[calc(3rem-3%)] lg:ml-[4.5%]" />
         </Reveal>
       </Container>
     </section>
@@ -93,7 +96,10 @@ function Collection() {
             <p className="eyebrow flex items-center gap-3 !text-[9px] text-gold md:hidden"><span className="h-px w-8 bg-gold" />{t('col.drag')} →</p>
           </Container>
         </Parallax>
-        <div ref={track} data-cursor="drag" className="flex snap-x snap-mandatory touch-pan-x gap-5 overflow-x-auto px-5 pb-6 will-change-transform [scrollbar-width:none] md:gap-10 md:px-10 lg:snap-none lg:overflow-visible">
+        {/* No touch-pan-x here: it would stop the browser scrolling the page
+            vertically when a swipe begins on a card, trapping Android users
+            at the carousel. Default pan-x pan-y gives both gestures. */}
+        <div ref={track} data-cursor="drag" className="flex snap-x snap-mandatory gap-5 overflow-x-auto overscroll-x-contain px-[max(1.25rem,var(--sal))] pb-6 will-change-transform [scrollbar-width:none] md:gap-10 md:px-[max(2.5rem,var(--sar))] lg:snap-none lg:overflow-visible">
           {list.map((p, i) => {
             const f = fragrances.find((x) => x.id === p.frag)!
             return (
@@ -128,7 +134,7 @@ function Fragrances() {
         {fragrances.map((x, i) => {
           const product = products.find((p) => p.published && p.frag === x.id)
           return (
-            <article key={x.id} className="relative flex min-h-[100svh] snap-start flex-col justify-center overflow-hidden px-5 py-24" style={{ background: x.bg, color: x.ink }}>
+            <article key={x.id} className="relative flex min-h-[100svh] snap-start flex-col justify-center overflow-hidden px-[max(1.25rem,var(--sal))] py-24" style={{ background: x.bg, color: x.ink }}>
               <div className="pointer-events-none absolute inset-y-0 left-5 w-px opacity-20" style={{ background: x.ink }} />
               <Parallax mobileOnly speed={-0.1} className="relative z-10">
                 {i === 0 && <h2 id="frag-t-mobile" className="eyebrow mb-8 flex items-center gap-3"><Sparkle />{t('frag.title')}</h2>}
@@ -164,7 +170,7 @@ function Fragrances() {
         })}
       </section>
 
-      <section className="relative hidden overflow-hidden py-40 transition-colors duration-[1400ms] ease-out-lux lg:block" style={{ background: f.bg, color: f.ink }} aria-labelledby="frag-t">
+      <section className="relative hidden overflow-hidden py-28 transition-colors duration-[1400ms] ease-out-lux lg:block" style={{ background: f.bg, color: f.ink }} aria-labelledby="frag-t">
         <Container>
           <Reveal><h2 id="frag-t" className="eyebrow mb-16 flex items-center gap-3"><Sparkle />{t('frag.title')}</h2></Reveal>
           <div className="grid items-center gap-14 lg:grid-cols-12">
@@ -200,15 +206,15 @@ function Why() {
   const { t } = useCMS()
   const icons = [Flame, PenTool, Gem, Hourglass]
   return (
-    <section className="py-32 md:py-48" aria-labelledby="why-t">
+    <section className="py-20 md:py-28" aria-labelledby="why-t">
       <Container>
-        <Reveal className="mb-20 text-center"><h2 id="why-t" className="font-serif text-[clamp(2.6rem,5vw,5rem)] font-light uppercase leading-none"><Lines lines={[t('why.title')]} /></h2></Reveal>
+        <Reveal className="mb-12 text-center"><h2 id="why-t" className="font-serif text-[clamp(2.6rem,5vw,5rem)] font-light uppercase leading-none"><Lines lines={[t('why.title')]} /></h2></Reveal>
         <Reveal className="grid grid-flow-dense border-t border-beige sm:grid-cols-2 lg:grid-cols-4">
           {icons.map((I, i) => (
-            <div key={i} className="fade-up group relative border-b border-beige px-6 py-14 sm:[&:nth-child(odd)]:border-r lg:border-r lg:last:border-r-0" style={{ transitionDelay: `${i * 0.1}s` }}>
+            <div key={i} className="fade-up group relative border-b border-beige px-6 py-12 sm:[&:nth-child(odd)]:border-r lg:border-r lg:last:border-r-0" style={{ transitionDelay: `${i * 0.1}s` }}>
               <span className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-gold transition-transform duration-[900ms] ease-lux group-hover:scale-x-100" />
               <I strokeWidth={0.75} className="h-9 w-9 text-gold transition-transform duration-[900ms] ease-out-lux group-hover:-translate-y-1" />
-              <h3 className="mt-12 font-serif text-3xl leading-tight">{t(`why.${i + 1}`)}</h3>
+              <h3 className="mt-10 font-serif text-3xl leading-tight">{t(`why.${i + 1}`)}</h3>
               <p className="mt-4 text-sm leading-relaxed text-taupe">{t(`why.${i + 1}d`)}</p>
             </div>
           ))}
@@ -230,7 +236,7 @@ function Lifestyle() {
       <Parallax speed={0.24} className="absolute -bottom-[5%] -right-[5%] w-[52vw] max-w-[220px] md:bottom-[8%] md:right-[8%] md:w-[24vw] md:max-w-[380px]"><Reveal><div className="clip arch aspect-[3/4.4] overflow-hidden border border-blush bg-blush p-1.5 shadow-2xl shadow-logo/10"><img loading="lazy" src={bath} alt="Sabonete líquido Gramado Aroma no lavabo" className="arch h-full w-full object-cover" /></div></Reveal></Parallax>
       <Parallax speed={0.28} className="absolute left-[6%] top-[14%] hidden w-[16vw] md:block"><Reveal><div className="clip aspect-square overflow-hidden" style={{ transitionDelay: '.2s' }}><img loading="lazy" src={candleClose} alt="" className="h-full w-full object-cover" /></div></Reveal></Parallax>
       <Parallax speed={-0.1} className="absolute inset-x-0 top-[27%] z-20 md:top-[40%]">
-        <Reveal as="div" className="mx-auto max-w-[1600px] px-5 md:px-10">
+        <Reveal as="div" className="mx-auto max-w-[1600px] px-[max(1.25rem,var(--sal))] md:px-[max(2.5rem,var(--sar))]">
           <p className="fade-up eyebrow mb-6 flex items-center gap-3 !text-[9px] text-gold"><Sparkle />{t('hero.label')}</p>
           <h2 id="life-t" className="max-w-5xl font-serif text-[clamp(3rem,12vw,9.5rem)] font-light leading-[0.88] tracking-[-0.02em] text-logo"><Lines lines={[t('life.t1'), <em key="a" className="pl-[7vw] italic text-gold md:pl-[8vw]">{t('life.t2')}</em>]} /></h2>
           <p className="fade-up mt-7 max-w-[18rem] border-l border-gold pl-4 text-sm leading-relaxed text-logo/85 md:ml-[8vw] md:mt-8 md:max-w-xs">{t('life.body')}</p>
@@ -241,33 +247,62 @@ function Lifestyle() {
 }
 
 export function ReviewCarousel() {
-  const { t, tr, reviews, products } = useCMS()
+  const { t, tr, reviews, products, lang } = useCMS()
   const list = reviews.filter((r) => r.approved && r.featured)
   const [i, setI] = useState(0); const [dx, setDx] = useState(0); const start = useRef<number | null>(null)
   const n = list.length; const clamp = (k: number) => (k + n) % n
+  const stack = useRef<HTMLDivElement>(null)
+  const slides = useRef<(HTMLElement | null)[]>([])
+
+  /* A grid stack on its own sizes to the TALLEST slide, which left a large empty
+     block under shorter quotes. Measure the active slide and pin the box to it;
+     the wrapper's overflow-hidden clips the taller inactive ones (opacity 0). */
+  useEffect(() => {
+    const box = stack.current; const el = slides.current[i]
+    if (!box || !el) return
+    const fit = () => { box.style.height = `${Math.max(280, el.offsetHeight)}px` }
+    fit()
+    addEventListener('resize', fit)
+    return () => removeEventListener('resize', fit)
+  }, [i, n, lang])
+
   if (!n) return null
   return (
-    <div className="relative select-none" onPointerDown={(e) => (start.current = e.clientX)} onPointerMove={(e) => start.current !== null && setDx(e.clientX - start.current)}
-      onPointerUp={() => { if (Math.abs(dx) > 60) setI(clamp(i + (dx < 0 ? 1 : -1))); setDx(0); start.current = null }} onPointerLeave={() => { setDx(0); start.current = null }} data-cursor="drag" aria-roledescription="carousel">
-      <div className="relative min-h-[360px] overflow-hidden md:min-h-[300px]">
-        {list.map((r, k) => {
-          const off = ((k - i + n) % n); const pos = off === 0 ? 0 : off === 1 ? 1 : off === n - 1 ? -1 : 2
-          const p = products.find((x) => x.id === r.product)
-          return (
-            <figure key={r.id} aria-hidden={pos !== 0} className="absolute inset-0 transition-all duration-[1200ms] ease-lux" style={{ transform: `translateX(calc(${pos * 100}% + ${pos === 0 ? dx * 0.4 : 0}px))`, opacity: pos === 0 ? 1 : 0 }}>
-              <Stars n={r.rating} />
-              <blockquote className="mt-8 max-w-4xl font-serif text-[clamp(1.8rem,3.6vw,3.4rem)] font-light italic leading-[1.15] text-soft">“{tr(r.text)}”</blockquote>
-              <figcaption className="mt-10 flex items-center gap-5">
-                {r.photo && <img src={r.photo} alt="" className="h-14 w-14 rounded-full object-cover" />}
-                <div><p className="eyebrow !text-[10px] text-soft">— {r.name}</p>{p && <p className="mt-1 text-xs text-taupe">{t('rev.bought')}: {tr(p.name)}</p>}</div>
-              </figcaption>
-            </figure>
-          )
-        })}
+    /* touch-pan-y keeps vertical page scroll native while letting horizontal
+       drags register — without it Android cancels the gesture mid-swipe. */
+    <div className="relative touch-pan-y select-none" role="group" aria-roledescription="carousel" aria-label={t('rev.title1')} tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'ArrowRight') { e.preventDefault(); setI(clamp(i + 1)) }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); setI(clamp(i - 1)) }
+      }}
+      onPointerDown={(e) => { if (e.pointerType === 'mouse' && e.button !== 0) return; start.current = e.clientX; (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId) }}
+      onPointerMove={(e) => start.current !== null && setDx(e.clientX - start.current)}
+      onPointerUp={() => { if (Math.abs(dx) > 60) setI(clamp(i + (dx < 0 ? 1 : -1))); setDx(0); start.current = null }}
+      onPointerCancel={() => { setDx(0); start.current = null }}
+      onPointerLeave={() => { setDx(0); start.current = null }} data-cursor="drag">
+      {/* Grid stack, not absolute inset-0: the box grows to the tallest slide,
+          so long quotes and enlarged Android font scales can never clip. */}
+      <div className="relative overflow-hidden">
+        <div ref={stack} className="carousel-h grid min-h-[280px] content-start [&>*]:col-start-1 [&>*]:row-start-1">
+          {list.map((r, k) => {
+            const off = ((k - i + n) % n); const pos = off === 0 ? 0 : off === 1 ? 1 : off === n - 1 ? -1 : 2
+            const p = products.find((x) => x.id === r.product)
+            return (
+              <figure key={r.id} ref={(el) => { slides.current[k] = el }} aria-hidden={pos !== 0} className="transition-all duration-[1200ms] ease-lux" style={{ transform: `translateX(calc(${pos * 100}% + ${pos === 0 ? dx * 0.4 : 0}px))`, opacity: pos === 0 ? 1 : 0, pointerEvents: pos === 0 ? 'auto' : 'none' }}>
+                <Stars n={r.rating} />
+                <blockquote className="mt-8 max-w-4xl font-serif text-[clamp(1.8rem,3.6vw,3.4rem)] font-light italic leading-[1.15] text-soft">“{tr(r.text)}”</blockquote>
+                <figcaption className="mt-10 flex items-center gap-5">
+                  {r.photo && <img src={r.photo} alt="" className="h-14 w-14 shrink-0 rounded-full object-cover" />}
+                  <div><p className="eyebrow !text-[10px] text-soft">— {r.name}</p>{p && <p className="mt-1 text-xs text-taupe">{t('rev.bought')}: {tr(p.name)}</p>}</div>
+                </figcaption>
+              </figure>
+            )
+          })}
+        </div>
       </div>
-      <div className="mt-10 flex items-center gap-8">
-        <button aria-label="Anterior" onClick={() => setI(clamp(i - 1))} className="flex h-12 w-12 items-center justify-center rounded-full border border-beige transition-colors duration-500 hover:border-gold hover:text-gold"><ArrowLeft strokeWidth={1} className="h-4 w-4" /></button>
-        <button aria-label="Próximo" onClick={() => setI(clamp(i + 1))} className="flex h-12 w-12 items-center justify-center rounded-full border border-beige transition-colors duration-500 hover:border-gold hover:text-gold"><ArrowRight strokeWidth={1} className="h-4 w-4" /></button>
+      <div className="mt-10 flex items-center gap-4 sm:gap-6">
+        <button aria-label="Anterior" onClick={() => setI(clamp(i - 1))} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-beige transition-colors duration-500 hover:border-gold hover:text-gold active:bg-gold/10 sm:h-12 sm:w-12"><ArrowLeft strokeWidth={1} className="h-4 w-4" /></button>
+        <button aria-label="Próximo" onClick={() => setI(clamp(i + 1))} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-beige transition-colors duration-500 hover:border-gold hover:text-gold active:bg-gold/10 sm:h-12 sm:w-12"><ArrowRight strokeWidth={1} className="h-4 w-4" /></button>
         <div className="flex flex-1 gap-2">{list.map((_, k) => <span key={k} className="relative h-px flex-1 bg-beige"><span className={`absolute inset-0 origin-left bg-gold transition-transform duration-[1200ms] ease-lux ${k === i ? 'scale-x-100' : 'scale-x-0'}`} /></span>)}</div>
         <span className="eyebrow !text-[10px] tabular-nums text-taupe">0{i + 1} / 0{n}</span>
       </div>
@@ -278,8 +313,8 @@ export function ReviewCarousel() {
 function Reviews() {
   const { t } = useCMS(); const { go } = useRouter()
   return (
-    <section className="py-32 md:py-48" aria-labelledby="rev-t">
-      <Container className="grid gap-16 lg:grid-cols-12">
+    <section className="py-20 md:py-28" aria-labelledby="rev-t">
+      <Container className="grid gap-14 lg:grid-cols-12">
         <Reveal className="lg:col-span-4">
           <h2 id="rev-t" className="font-serif text-[clamp(2.2rem,3.8vw,3.8rem)] font-light uppercase leading-[1]"><Lines lines={[t('rev.title1'), <span key="a" className="text-gold">{t('rev.title2')}</span>]} /></h2>
           <div className="fade-up mt-10"><TextLink onClick={() => go('/avaliacoes')}>{t('rev.all')}</TextLink></div>
@@ -296,9 +331,9 @@ export function InstagramGrid() {
   if (!list.length) return <p className="py-20 text-center text-taupe">Instagram indisponível no momento.</p>
   const spans = ['md:col-span-2 md:row-span-2', '', 'md:row-span-2', '', '', 'md:col-span-2', '', '']
   return (
-    <section className="bg-cream py-32 md:py-44" aria-labelledby="ig-t">
+    <section className="bg-cream py-20 md:py-28" aria-labelledby="ig-t">
       <Container>
-        <Reveal className="mb-14 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+        <Reveal className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <h2 id="ig-t" className="font-serif text-[clamp(2.8rem,6vw,6rem)] font-light uppercase leading-[0.95]"><Lines lines={[t('ig.title')]} /></h2>
           <a href={`https://instagram.com/${settings.instagram}`} target="_blank" rel="noreferrer" className="fade-up font-script text-4xl text-gold transition hover:text-soft">@{settings.instagram}</a>
         </Reveal>
@@ -316,7 +351,7 @@ export function FinalCTA() {
     <section className="relative flex min-h-[88svh] items-center overflow-hidden bg-blush text-logo md:min-h-[100dvh]">
       <Parallax speed={0.15} className="absolute inset-[-15%_0]"><img loading="lazy" src={assets.candleMany} alt="" className="h-full w-full object-cover opacity-55 sepia-[0.1] saturate-[1.08]" /></Parallax>
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(248,242,238,.32),rgba(248,242,238,.7))]" />
-      <Reveal className="relative mx-auto w-full max-w-6xl px-5 text-center">
+      <Reveal className="relative mx-auto w-full max-w-6xl px-[max(1.25rem,var(--sal))] text-center">
         <Sparkle className="fade-up mx-auto mb-10 text-gold" />
         <h2 className="font-serif text-[clamp(2.8rem,7.5vw,7.6rem)] font-light uppercase leading-[0.95]"><Lines lines={[t('cta.t1'), <em key="a" className="normal-case italic text-taupe">{t('cta.t2')}</em>, t('cta.t3')]} /></h2>
         <div className="fade-up mt-14 flex justify-center" style={{ transitionDelay: '.4s' }}><ArrowBtn onClick={() => go('/produtos')} className="!border-logo !bg-logo">{t('cta.btn')}</ArrowBtn></div>

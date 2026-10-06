@@ -20,12 +20,88 @@
   --ease-out-lux: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-html { background: var(--color-ivory); color: var(--color-soft); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+/* Safe-area insets (Android gesture bar, display cutouts, iOS home indicator) */
+:root {
+  --sat: env(safe-area-inset-top, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
+  --sar: env(safe-area-inset-right, 0px);
+}
+
+html {
+  background: var(--color-ivory);
+  color: var(--color-soft);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  /* respect the user's font-size preference, but don't auto-inflate on rotate */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  scroll-behavior: smooth;
+}
 body { overflow-x: hidden; }
 ::selection { background: var(--color-gold-2); color: #fff; }
 :focus-visible { outline: 1px solid var(--color-gold); outline-offset: 4px; }
 
+/* Kill the 300ms double-tap-zoom delay and long-press text selection on controls */
+a, button, label, summary, [role='button'], [role='tab'] { touch-action: manipulation; }
+button, [role='button'] { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+
+/* Baseline enhancements, deliberately parked in @layer components.
+
+   Unlayered author rules beat EVERY Tailwind utility regardless of specificity
+   — layer is compared before specificity, so :where() alone won't rescue this.
+   `components` is declared by @import 'tailwindcss' ahead of `utilities`, which
+   means these behave as a floor that any utility can still override. That is the
+   relationship we want for the brand lock-up, which needs `.tap` for its 44px
+   hit area but `absolute` for its centring.
+
+   `.safe-*` is the exception and stays unlayered on purpose: it must win over
+   `py-*`/`pt-*` so gesture-bar clearance is never silently dropped. Its call
+   sites therefore express their design padding additively rather than stacking. */
+@layer components {
+  /* Tap-target floor. Expands the hit area to 44px without touching layout, so
+     compact editorial type keeps its look but stays reachable with a thumb.
+     `.tap` for boxed controls, `.tap-y` for inline text links. */
+  .tap { position: relative; }
+  .tap::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: max(100%, 44px); height: max(100%, 44px);
+    transform: translate(-50%, -50%);
+  }
+  .tap-y { position: relative; }
+  .tap-y::after {
+    content: '';
+    position: absolute; top: 50%; left: 0; right: 0;
+    height: 44px; transform: translateY(-50%);
+  }
+
+  /* Review carousel: height follows the ACTIVE slide rather than the tallest
+     one, so a short quote doesn't leave dead space beneath it. */
+  .carousel-h { transition: height 620ms var(--ease-lux); }
+}
+
 .eyebrow { font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase; font-weight: 500; }
+
+/* On touch the labels carry real meaning, so lift them out of the 8–9px
+   micro range and tighten the tracking so nothing reflows. */
+@media (pointer: coarse) {
+  .eyebrow { font-size: 11px !important; letter-spacing: 0.17em !important; }
+  .eyebrow .micro { letter-spacing: 0.1em; }
+}
+
+/* On touch, hover never fires — reveal the second product photo on press instead.
+   The 1.4s desktop transition is far too slow to read as press feedback. */
+@media (pointer: coarse) {
+  .swap-press { transition-duration: 320ms !important; }
+}
+
+/* Android 13+ can force reduced transparency — give the frosted chrome an opaque base */
+@media (prefers-reduced-transparency: reduce) {
+  .backdrop-blur-md { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+}
 
 /* mask line reveal */
 .mline { display: block; overflow: hidden; padding-bottom: 0.08em; }
@@ -42,6 +118,13 @@ body { overflow-x: hidden; }
 .in .clip img, .clip.in img { transform: scale(1); }
 
 .arch { border-radius: 999px 999px 0 0; }
+
+/* Safe-area padding helpers for fixed/edge-anchored chrome.
+   Horizontal gutters are applied inline via max() on the containers themselves
+   rather than as a separate class, so insets never stack on top of px-*. */
+.safe-t { padding-top: calc(1.5rem + var(--sat)); }
+.safe-t-sm { padding-top: calc(0.75rem + var(--sat)); }
+.safe-b { padding-bottom: var(--sab); }
 
 .grain { position: fixed; inset: 0; pointer-events: none; z-index: 60; opacity: .05; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
 

@@ -4,7 +4,7 @@ import { useCMS, brl, type Product, type Post } from './cms'
 import { useRouter } from './motion'
 
 export const ArrowBtn = ({ children, onClick, dark = true, href, className = '' }: { children: ReactNode; onClick?: () => void; dark?: boolean; href?: string; className?: string }) => {
-  const cls = `group relative inline-flex items-center gap-4 overflow-hidden border px-7 py-4 eyebrow transition-colors duration-700 ease-out-lux disabled:opacity-40 ${dark ? 'border-soft bg-soft text-cream hover:text-soft' : 'border-current text-current hover:text-soft'} ${className}`
+  const cls = `group relative inline-flex items-center gap-4 overflow-hidden border px-7 py-4 eyebrow transition-colors duration-700 ease-out-lux active:opacity-75 disabled:opacity-40 ${dark ? 'border-soft bg-soft text-cream hover:text-soft' : 'border-current text-current hover:text-soft'} ${className}`
   const inner = <>
     <span className={`absolute inset-0 origin-bottom scale-y-0 transition-transform duration-700 ease-lux group-hover:scale-y-100 ${dark ? 'bg-ivory' : 'bg-cream'}`} />
     <span className="relative">{children}</span>
@@ -14,7 +14,7 @@ export const ArrowBtn = ({ children, onClick, dark = true, href, className = '' 
 }
 
 export const TextLink = ({ children, onClick }: { children: ReactNode; onClick?: () => void }) => (
-  <button onClick={onClick} className="group relative eyebrow pb-1">{children}<span className="absolute bottom-0 left-0 h-px w-full origin-right bg-current transition-transform duration-700 ease-lux group-hover:scale-x-0 group-hover:origin-left" /><span className="absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-gold transition-transform delay-200 duration-700 ease-lux group-hover:scale-x-100" /></button>
+  <button onClick={onClick} className="group tap-y relative eyebrow pb-1 active:opacity-60">{children}<span className="absolute bottom-0 left-0 h-px w-full origin-right bg-current transition-transform duration-700 ease-lux group-hover:scale-x-0 group-hover:origin-left" /><span className="absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-gold transition-transform delay-200 duration-700 ease-lux group-hover:scale-x-100" /></button>
 )
 
 export const Sparkle = ({ className = '' }: { className?: string }) => <svg viewBox="0 0 20 20" className={`h-3 w-3 ${className}`} fill="currentColor" aria-hidden><path d="M10 0c.6 5.2 4.8 9.4 10 10-5.2.6-9.4 4.8-10 10-.6-5.2-4.8-9.4-10-10C5.2 9.4 9.4 5.2 10 0z" /></svg>
@@ -37,20 +37,22 @@ export const Logo = ({ light }: { light?: boolean }) => (
 
 export const Qty = ({ value, onChange }: { value: number; onChange: (n: number) => void }) => (
   <div className="inline-flex items-center border border-beige">
-    <button aria-label="-" disabled={value <= 1} onClick={() => onChange(value - 1)} className="p-3 transition hover:text-gold disabled:opacity-30"><Minus strokeWidth={1} className="h-3.5 w-3.5" /></button>
+    <button aria-label="-" disabled={value <= 1} onClick={() => onChange(value - 1)} className="flex h-11 w-11 items-center justify-center transition hover:text-gold active:bg-gold/10 disabled:opacity-30"><Minus strokeWidth={1} className="h-3.5 w-3.5" /></button>
     <span className="w-8 text-center text-sm tabular-nums">{value}</span>
-    <button aria-label="+" onClick={() => onChange(value + 1)} className="p-3 transition hover:text-gold"><Plus strokeWidth={1} className="h-3.5 w-3.5" /></button>
+    <button aria-label="+" onClick={() => onChange(value + 1)} className="flex h-11 w-11 items-center justify-center transition hover:text-gold active:bg-gold/10"><Plus strokeWidth={1} className="h-3.5 w-3.5" /></button>
   </div>
 )
 
 export function Field({ label, error, textarea, className = '', ...p }: { label: string; error?: string; textarea?: boolean; className?: string } & InputHTMLAttributes<HTMLInputElement & HTMLTextAreaElement>) {
   const id = 'f-' + label.replace(/\W/g, '')
-  const cls = `peer w-full border-0 border-b bg-transparent px-0 pb-2 pt-6 text-[15px] text-soft placeholder-transparent outline-none transition-colors duration-500 focus:border-gold ${error ? 'border-red-800/60' : 'border-beige'}`
+  /* text-base (16px), never smaller — Android Chrome auto-zooms the viewport on
+     focus when an input's font-size is under 16px and never zooms back out. */
+  const cls = `peer w-full border-0 border-b bg-transparent px-0 pb-2 pt-7 text-base text-soft placeholder-transparent outline-none transition-colors duration-500 focus:border-gold ${error ? 'border-red-800/60' : 'border-beige'}`
   return (
     <div className={`relative ${className}`}>
-      {textarea ? <textarea id={id} rows={4} placeholder={label} className={cls + ' resize-none'} {...p} /> : <input id={id} placeholder={label} className={cls} aria-invalid={!!error} {...p} />}
-      <label htmlFor={id} className="pointer-events-none absolute left-0 top-6 text-[15px] text-taupe transition-all duration-500 ease-out-lux peer-focus:top-0 peer-focus:text-[10px] peer-focus:tracking-[0.25em] peer-focus:uppercase peer-focus:text-gold peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-[10px] peer-[:not(:placeholder-shown)]:tracking-[0.25em] peer-[:not(:placeholder-shown)]:uppercase">{label}</label>
-      <span className={`absolute -bottom-5 left-0 text-[11px] text-red-900/80 transition-all duration-500 ${error ? 'opacity-100' : '-translate-y-1 opacity-0'}`}>{error}</span>
+      {textarea ? <textarea id={id} rows={4} placeholder={label} className={cls + ' resize-none'} {...p} /> : <input id={id} placeholder={label} className={cls} aria-invalid={!!error} aria-describedby={error ? id + '-err' : undefined} {...p} />}
+      <label htmlFor={id} className="pointer-events-none absolute left-0 top-7 text-base text-taupe transition-all duration-500 ease-out-lux peer-focus:top-0 peer-focus:text-[10px] peer-focus:tracking-[0.25em] peer-focus:uppercase peer-focus:text-gold peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-[10px] peer-[:not(:placeholder-shown)]:tracking-[0.25em] peer-[:not(:placeholder-shown)]:uppercase">{label}</label>
+      <span id={id + '-err'} role={error ? 'alert' : undefined} className={`absolute -bottom-5 left-0 text-[11px] text-red-900/80 transition-all duration-500 ${error ? 'opacity-100' : '-translate-y-1 opacity-0'}`}>{error}</span>
     </div>
   )
 }
@@ -74,7 +76,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
 export const Toast = () => {
   const { toast } = useCart()
-  return <div role="status" aria-live="polite" className={`fixed bottom-6 left-1/2 z-[75] -translate-x-1/2 bg-soft px-6 py-4 text-sm text-cream transition-all duration-700 ease-out-lux ${toast ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-6 opacity-0'}`}><Sparkle className="mr-3 inline text-gold-2" />{toast}</div>
+  return <div role="status" aria-live="polite" className={`fixed bottom-[calc(1.5rem+var(--sab))] left-1/2 z-[75] max-w-[calc(100%-2rem)] -translate-x-1/2 bg-soft px-[max(1.5rem,var(--sal))] py-4 text-center text-sm text-cream transition-all duration-700 ease-out-lux ${toast ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-6 opacity-0'}`}><Sparkle className="mr-3 inline text-gold-2" />{toast}</div>
 }
 
 /* ---------------- product cards ---------------- */
@@ -85,8 +87,8 @@ export function ProductCard({ p, tall, onQuick }: { p: Product; tall?: boolean; 
     <article className="group" itemScope itemType="https://schema.org/Product">
       <button onClick={() => go('/produto/' + p.id)} data-cursor="view" data-cursor-label={t('prod.view')} className="block w-full text-left" aria-label={tr(p.name)}>
         <div className={`relative overflow-hidden bg-mist ${tall ? 'aspect-[3/4.3]' : 'aspect-[4/5]'}`}>
-          <img itemProp="image" loading="lazy" src={p.imgs[0]} alt={tr(p.name)} className="absolute inset-0 h-full w-full object-cover transition-all duration-[1400ms] ease-out-lux group-hover:scale-[1.06] group-hover:opacity-0" />
-          <img loading="lazy" src={p.imgs[1]} alt="" className="absolute inset-0 h-full w-full scale-[1.12] object-cover opacity-0 transition-all duration-[1400ms] ease-out-lux group-hover:scale-100 group-hover:opacity-100" />
+          <img itemProp="image" loading="lazy" src={p.imgs[0]} alt={tr(p.name)} className="swap-press absolute inset-0 h-full w-full object-cover transition-all duration-[1400ms] ease-out-lux group-hover:scale-[1.06] group-hover:opacity-0 group-active:scale-[1.04] group-active:opacity-0" />
+          <img loading="lazy" src={p.imgs[1]} alt="" className="swap-press absolute inset-0 h-full w-full scale-[1.12] object-cover opacity-0 transition-all duration-[1400ms] ease-out-lux group-hover:scale-100 group-hover:opacity-100 group-active:scale-100 group-active:opacity-100" />
           {!p.stock && <span className="eyebrow absolute left-4 top-4 bg-cream/90 px-3 py-1.5 !text-[9px] text-taupe">{t('prod.out')}</span>}
           <span className="eyebrow absolute right-4 top-4 flex items-center gap-2 !text-[9px] text-cream mix-blend-difference"><span className="h-1.5 w-1.5 rounded-full" style={{ background: f.accent }} />{tr(f.name)}</span>
         </div>
@@ -100,10 +102,10 @@ export function ProductCard({ p, tall, onQuick }: { p: Product; tall?: boolean; 
           <meta itemProp="priceCurrency" content="BRL" /><meta itemProp="price" content={String(p.price)} />
           <link itemProp="availability" href={p.stock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock'} />
           <p className="text-sm tabular-nums text-soft">{brl(p.price)}</p>
-          {onQuick && <button onClick={() => onQuick(p)} className="eyebrow mt-2 !text-[9px] text-gold opacity-100 transition duration-500 md:translate-y-2 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">{t('prod.quick')}</button>}
+          {onQuick && <button onClick={() => onQuick(p)} className="eyebrow tap-y mt-1 !text-[10px] text-gold opacity-100 transition duration-500 active:opacity-60 md:translate-y-2 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">{t('prod.quick')}</button>}
         </div>
       </div>
-      <button type="button" disabled={!p.stock} onClick={() => add(p.id)} className="group mt-5 flex w-full items-center justify-center gap-3 border border-soft/25 py-3.5 eyebrow !text-[9px] transition-colors duration-500 hover:border-soft hover:bg-soft hover:text-cream disabled:cursor-not-allowed disabled:opacity-40">
+      <button type="button" disabled={!p.stock} onClick={() => add(p.id)} className="group mt-5 flex w-full items-center justify-center gap-3 border border-soft/25 py-3.5 eyebrow !text-[10px] transition-colors duration-500 hover:border-soft hover:bg-soft hover:text-cream active:bg-soft active:text-cream disabled:cursor-not-allowed disabled:opacity-40">
         <ShoppingBag strokeWidth={1} className="h-3.5 w-3.5" />{p.stock ? t('prod.add') : t('prod.out')}
       </button>
     </article>
