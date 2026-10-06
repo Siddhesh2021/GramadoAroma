@@ -1,46 +1,103 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode, type ElementType } from 'react'
 
 /* Motion system
-   ease-lux      cubic-bezier(.76,0,.24,1)  curtains, masks, page transitions
-   ease-out-lux  cubic-bezier(.22,1,.36,1)  text lines, entrances
-   durations     loader 2.6s · curtain .9s · line 1.4s · image 1.6s · hover .9s
-   Scroll is native (accessible); a lerped "virtual scroll" drives parallax for inertia. */
-
+   A single native-scroll state drives every scroll effect. Parallax geometry is
+   cached and refreshed only when layout can change, keeping animation work on
+   the compositor without making React rerender on every frame. */
 export const reduced = () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-// lerped scroll shared by every parallax layer, single rAF loop
-const subs = new Set<(y: number) => void>()
-let smooth = 0, started = false
+type ScrollSubscriber = (y: number) => void
+const subs = new Set<ScrollSubscriber>()
+let smooth = 0
+let started = false
+
 function loop() {
   const target = window.scrollY
-  smooth += (target - smooth) * (reduced() ? 1 : 0.09)
+  const ease = reduced() ? 1 : 0.12
+  smooth += (target - smooth) * ease
   if (Math.abs(target - smooth) < 0.05) smooth = target
-  subs.forEach((f) => f(smooth))
+  subs.forEach((fn) => fn(smooth))
   requestAnimationFrame(loop)
 }
-export function useSmoothScroll(fn: (y: number) => void) {
+
+export function useSmoothScroll(fn: ScrollSubscriber) {
+  const fnRef = useRef(fn)
+  fnRef.current = fn
+
   useEffect(() => {
-    if (!started) { started = true; smooth = window.scrollY; requestAnimationFrame(loop) }
-    subs.add(fn); return () => { subs.delete(fn) }
-  })
+    const subscriber = (y: number) => fnRef.current(y)
+    if (!started) {
+      started = true
+      smooth = window.scrollY
+      requestAnimationFrame(loop)
+    }
+    subs.add(subscriber)
+    return () => subs.delete(subscriber)
+  }, [])
 }
 
-/* Parallax: offset proportional to the element's distance from viewport centre.
-   speed 0.1 = background drift, 0.25 = foreground product, negative = counter-motion type. */
+/* Viewport-progress parallax.
+   Geometry is cached; transforms never participate in document flow. */
 export function Parallax({ speed = 0.15, className = '', children, scale, mobileOnly = false }: { speed?: number; className?: string; children: ReactNode; scale?: number; mobileOnly?: boolean }) {
   const ref = useRef<HTMLDivElement>(null)
+  const geometry = useRef({ top: 0, height: 1, ready: false })
   const visible = useRef(true)
+
   useEffect(() => {
-    const el = ref.current!; const io = new IntersectionObserver(([e]) => (visible.current = e.isIntersecting), { rootMargin: '200px' })
-    io.observe(el); return () => io.disconnect()
+    const el = ref.current
+    if (!el) return
+
+    const refresh = () => {
+      const parent = el.parentElement
+      if (!parent) return
+      const rect = parent.getBoundingClientRect()
+      geometry.current = {
+        top: rect.top + window.scrollY,
+        height: Math.max(1, rect.height),
+        ready: true,
+      }
+    }
+
+    const io = new IntersectionObserver(([entry]) => {
+      visible.current = entry.isIntersecting
+    }, { rootMargin: '250px' })
+    io.observe(el)
+
+    const ro = new ResizeObserver(refresh)
+    ro.observe(el.parentElement || el)
+    addEventListener('resize', refresh, { passive: true })
+    addEventListener('orientationchange', refresh, { passive: true })
+    requestAnimationFrame(refresh)
+
+    return () => {
+      io.disconnect()
+      ro.disconnect()
+      removeEventListener('resize', refresh)
+      removeEventListener('orientationchange', refresh)
+    }
   }, [])
+
   useSmoothScroll((y) => {
-    const el = ref.current; if (!el || !visible.current || reduced()) return
-    if (mobileOnly && innerWidth >= 768) { el.style.transform = ''; return }
-    const r = el.parentElement!.getBoundingClientRect()
-    const mid = r.top + (window.scrollY - y) + r.height / 2 - window.innerHeight / 2
-    el.style.transform = `translate3d(0, ${(-mid * speed).toFixed(2)}px, 0)${scale ? ` scale(${scale})` : ''}`
+    const el = ref.current
+    const g = geometry.current
+    if (!el || !g.ready || !visible.current || reduced()) return
+
+    const mobile = window.innerWidth < 768
+    if (mobileOnly && !mobile) {
+      el.style.transform = scale ? `scale(${scale})` : ''
+      return
+    }
+
+    const range = mobile
+      ? Math.min(28, Math.max(8, Math.abs(speed) * 120))
+      : Math.min(80, Math.max(12, Math.abs(speed) * 320))
+    const progress = (y + window.innerHeight - g.top) / (window.innerHeight + g.height)
+    const centered = Math.max(-1, Math.min(1, progress * 2 - 1))
+    const offset = -centered * range * Math.sign(speed || 1)
+
+    el.style.transform = `translate3d(0,${offset.toFixed(2)}px,0)${scale ? ` scale(${scale})` : ''}`
   })
+
   return <div ref={ref} className={`will-change-transform ${className}`}>{children}</div>
 }
 
