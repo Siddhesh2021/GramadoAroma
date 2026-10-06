@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { CMSProvider } from './cms'
-import { Router, Loader, Cursor } from './motion'
+import { Router, Loader } from './motion'
 import { CartProvider, Toast } from './ui'
 import { Nav, Footer, CartDrawer } from './chrome'
 import { Home } from './home'
@@ -37,7 +37,6 @@ export default function App() {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Organization', name: 'Gramado Aroma', url: 'https://gramadoaroma.com.br', sameAs: ['https://instagram.com/gramadoaromaoficial'] }) }} />
         <Router>{(path) => <Site path={path} ready={!loading} />}</Router>
         {loading && <Loader onDone={() => setLoading(false)} />}
-        <Cursor />
         <div className="grain" aria-hidden />
       </CartProvider>
     </CMSProvider>

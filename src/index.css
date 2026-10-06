@@ -119,6 +119,26 @@ button, [role='button'] { -webkit-user-select: none; user-select: none; -webkit-
 
 .arch { border-radius: 999px 999px 0 0; }
 
+.hero-photo {
+  mix-blend-mode: multiply;
+}
+.hero-photo img {
+  filter: sepia(.24) saturate(1.28) contrast(1.18) brightness(.94);
+  transform: scale(1.04);
+}
+.hero-wash {
+  background: linear-gradient(90deg, rgba(247, 243, 236, .96) 0%, rgba(247, 243, 236, .78) 35%, rgba(247, 243, 236, .35) 65%, rgba(247, 243, 236, .15) 100%);
+}
+.hero-vignette {
+  background: radial-gradient(circle at 76% 42%, transparent 0%, rgba(74, 56, 38, .08) 54%, rgba(74, 56, 38, .16) 100%);
+  mix-blend-mode: multiply;
+}
+.hero-grain {
+  opacity: .07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='hero-noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23hero-noise)' opacity='.22'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+}
+
 /* Safe-area padding helpers for fixed/edge-anchored chrome.
    Horizontal gutters are applied inline via max() on the containers themselves
    rather than as a separate class, so insets never stack on top of px-*. */

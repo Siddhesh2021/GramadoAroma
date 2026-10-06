@@ -9,13 +9,15 @@ export const Container = ({ children, className = '' }: { children: ReactNode; c
 function Hero({ ready }: { ready: boolean }) {
   const { t, assets } = useCMS(); const { go } = useRouter()
   return (
-    <section className={`relative h-[100dvh] min-h-[640px] overflow-hidden bg-blush ${ready ? 'in' : ''}`} aria-labelledby="hero-title">
-      <div className={`absolute inset-0 transition-transform duration-[2600ms] ease-out-lux ${ready ? 'scale-100' : 'scale-[1.18]'}`}>
-        <Parallax speed={-0.25} className="absolute inset-[-10%_0]"><img src={assets.hero} alt="" fetchPriority="high" className="h-full w-full object-cover opacity-55 grayscale-[0.2] sepia-[0.1] saturate-[1.08]" /></Parallax>
+    <section className={`hero-stage relative h-[100dvh] min-h-[640px] overflow-hidden bg-blush ${ready ? 'in' : ''}`} aria-labelledby="hero-title">
+      <div className={`hero-photo absolute inset-0 transition-transform duration-[2600ms] ease-out-lux ${ready ? 'scale-100' : 'scale-[1.18]'}`}>
+        <Parallax speed={-0.25} className="absolute inset-[-10%_0]"><img src={assets.living} alt="Sala acolhedora com luz suave" fetchPriority="high" className="h-full w-full object-cover opacity-75" /></Parallax>
       </div>
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(248,242,238,.8)_0%,rgba(248,242,238,.52)_48%,rgba(248,242,238,.08)_100%)]" />
+      <div className="hero-wash absolute inset-0" />
+      <div className="hero-vignette absolute inset-0" />
+      <div className="hero-grain absolute inset-0" aria-hidden="true" />
       <Parallax speed={-0.1} className="absolute bottom-[-6%] right-[6%] hidden w-[22vw] max-w-[340px] md:block">
-        <div className={`arch clip aspect-[3/4.4] overflow-hidden border border-logo/30 p-2`} style={{ transitionDelay: '.6s' }}><img src={assets.candleTable} alt="Vela Aromática Gramado Aroma" className="arch h-full w-full object-cover" style={{ transitionDelay: '.6s' }} /></div>
+        <div className={`arch clip aspect-[3/4.4] overflow-hidden border border-logo/30 p-2`} style={{ transitionDelay: '.6s' }}><img src={assets.candleLit} alt="Vela acesa Gramado Aroma" className="arch h-full w-full object-cover" style={{ transitionDelay: '.6s' }} /></div>
       </Parallax>
       <Parallax speed={-0.05} className="absolute -left-10 top-24 hidden text-logo/30 lg:block"><Botanical className="h-[60vh]" /></Parallax>
       <div className="relative flex h-full flex-col justify-end pb-16 md:pb-24">
@@ -35,7 +37,6 @@ function Hero({ ready }: { ready: boolean }) {
           </Parallax>
         </Container>
       </div>
-      <div className="fade-up absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 text-logo/60 md:flex" style={{ transitionDelay: '1.2s' }}><span className="eyebrow !text-[9px]">{t('hero.scroll')}</span><span className="relative block h-12 w-px overflow-hidden bg-logo/20"><span className="absolute inset-x-0 top-0 h-1/2 animate-[drip_2.4s_cubic-bezier(.76,0,.24,1)_infinite] bg-gold" /></span></div>
     </section>
   )
 }
