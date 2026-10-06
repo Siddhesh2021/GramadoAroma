@@ -11,20 +11,20 @@ function Hero({ ready }: { ready: boolean }) {
   return (
     <section className={`hero-stage relative h-[100dvh] min-h-[640px] overflow-hidden bg-blush ${ready ? 'in' : ''}`} aria-labelledby="hero-title">
       <div className={`hero-photo absolute inset-0 transition-transform duration-[2600ms] ease-out-lux ${ready ? 'scale-100' : 'scale-[1.18]'}`}>
-        <Parallax speed={-0.25} className="absolute inset-[-10%_0]"><img src={assets.living} alt="Sala acolhedora com luz suave" fetchPriority="high" className="h-full w-full object-cover opacity-75" /></Parallax>
+        <Parallax speed={-0.18} className="absolute inset-[-8%_0]"><img src={assets.living} alt="Sala acolhedora com luz suave" fetchPriority="high" className="h-full w-full object-cover opacity-90" /></Parallax>
       </div>
       <div className="hero-wash absolute inset-0" />
       <div className="hero-vignette absolute inset-0" />
       <div className="hero-grain absolute inset-0" aria-hidden="true" />
       <Parallax speed={-0.1} className="absolute bottom-[-6%] right-[6%] hidden w-[22vw] max-w-[340px] md:block">
-        <div className={`arch clip aspect-[3/4.4] overflow-hidden border border-logo/30 p-2`} style={{ transitionDelay: '.6s' }}><img src={assets.candleLit} alt="Vela acesa Gramado Aroma" className="arch h-full w-full object-cover" style={{ transitionDelay: '.6s' }} /></div>
+        <div className={`arch clip aspect-[3/4.2] overflow-hidden border border-gold/40 bg-mist p-2`} style={{ transitionDelay: '.6s' }}><img src={assets.candleTable} alt="Vela aromática Gramado Aroma" className="arch h-full w-full object-cover" style={{ transitionDelay: '.6s' }} /></div>
       </Parallax>
       <Parallax speed={-0.05} className="absolute -left-10 top-24 hidden text-logo/30 lg:block"><Botanical className="h-[60vh]" /></Parallax>
       <div className="relative flex h-full flex-col justify-end pb-16 md:pb-24">
         <Container className="w-full">
           <Parallax speed={0.08}>
             <p className="fade-up eyebrow mb-8 flex items-center gap-3 text-gold" style={{ transitionDelay: '.2s' }}><Sparkle />{t('hero.label')}</p>
-            <h1 id="hero-title" className="max-w-6xl font-serif text-[clamp(3.2rem,8.2vw,8.4rem)] font-light leading-[0.92] tracking-[-0.01em] text-logo">
+            <h1 id="hero-title" className="max-w-6xl font-serif text-[clamp(3.25rem,13vw,5.5rem)] font-light leading-[0.9] tracking-[-0.015em] text-logo md:text-[clamp(4rem,8.2vw,8.4rem)]">
               <Lines delay={0.3} step={0.12} lines={[t('hero.title1'), <em key="e" className="font-light italic text-taupe">{t('hero.title2')}</em>]} />
             </h1>
             <div className="mt-10 flex flex-col gap-10 md:flex-row md:items-end md:justify-between md:pr-[30vw]">
@@ -81,14 +81,42 @@ function Collection() {
   const { t, tr, products, fragrances } = useCMS(); const { go } = useRouter()
   const wrap = useRef<HTMLDivElement>(null), track = useRef<HTMLDivElement>(null), bar = useRef<HTMLDivElement>(null)
   const list = products.filter((p) => p.published && p.featured).concat(products.filter((p) => p.published && !p.featured)).slice(0, 7)
+  // Size the pinned region from the real horizontal travel instead of a fixed 340vh.
+  // This removes the dead scroll space that appeared after the cards finished moving.
+  useEffect(() => {
+    const w = wrap.current; const tr = track.current
+    if (!w || !tr) return
+    const syncHeight = () => {
+      if (innerWidth < 1024) {
+        w.style.removeProperty('height')
+        return
+      }
+      const max = Math.max(0, tr.scrollWidth - innerWidth)
+      w.style.height = `${Math.max(innerHeight, innerHeight + max)}px`
+    }
+    syncHeight()
+    const ro = new ResizeObserver(syncHeight)
+    ro.observe(tr)
+    addEventListener('resize', syncHeight)
+    return () => { ro.disconnect(); removeEventListener('resize', syncHeight) }
+  }, [list.length])
+
   useSmoothScroll(() => {
-    const w = wrap.current, tr = track.current; if (!w || !tr || innerWidth < 1024) { if (tr) tr.style.transform = ''; return }
-    const r = w.getBoundingClientRect(); const max = tr.scrollWidth - innerWidth
-    const p = Math.min(1, Math.max(0, -r.top / (r.height - innerHeight)))
-    tr.style.transform = `translate3d(${-p * max}px,0,0)`; if (bar.current) bar.current.style.transform = `scaleX(${p})`
+    const w = wrap.current, tr = track.current
+    if (!w || !tr || innerWidth < 1024) {
+      if (tr) tr.style.transform = ''
+      if (bar.current) bar.current.style.transform = 'scaleX(0)'
+      return
+    }
+    const r = w.getBoundingClientRect()
+    const max = Math.max(0, tr.scrollWidth - innerWidth)
+    const range = Math.max(1, r.height - innerHeight)
+    const p = max === 0 ? 0 : Math.min(1, Math.max(0, -r.top / range))
+    tr.style.transform = `translate3d(${-p * max}px,0,0)`
+    if (bar.current) bar.current.style.transform = `scaleX(${p})`
   })
   return (
-    <section ref={wrap} className="relative bg-mist lg:h-[340vh]" aria-labelledby="col-t">
+    <section ref={wrap} className="relative bg-mist" aria-labelledby="col-t">
       <div className="overflow-hidden py-28 lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:justify-center lg:py-0">
         <Parallax mobileOnly speed={-0.055}>
           <Container className="mb-10 flex flex-col gap-5 md:mb-14 md:flex-row md:items-end md:justify-between">
@@ -104,8 +132,8 @@ function Collection() {
           {list.map((p, i) => {
             const f = fragrances.find((x) => x.id === p.frag)!
             return (
-              <button key={p.id} onClick={() => go('/produto/' + p.id)} data-cursor="view" data-cursor-label={t('prod.view')} className={`group relative shrink-0 snap-center text-left ${i % 3 === 1 ? 'w-[76vw] md:w-[30vw] lg:mt-20' : i % 3 === 2 ? 'w-[70vw] md:w-[22vw] lg:mt-6' : 'w-[82vw] md:w-[34vw]'}`}>
-                <div className={`relative overflow-hidden ${i % 3 === 1 ? 'arch aspect-[3/4]' : 'aspect-[4/5]'}`}>
+              <button key={p.id} onClick={() => go('/produto/' + p.id)} data-cursor="view" data-cursor-label={t('prod.view')} className="group relative w-[82vw] shrink-0 snap-center text-left md:w-[30vw] lg:w-[28vw]">
+                <div className="relative aspect-[4/5] overflow-hidden">
                   <img loading="lazy" src={p.imgs[0]} alt={tr(p.name)} className="h-full w-full scale-[1.08] object-cover transition-transform duration-[1600ms] ease-out-lux group-hover:translate-x-[-2%] group-hover:scale-[1.14]" />
                   <div className="absolute inset-0 bg-gradient-to-t from-soft/70 via-transparent opacity-60 transition-opacity duration-700 group-hover:opacity-100" />
                   <div className="absolute inset-x-6 bottom-6 text-cream">
@@ -230,8 +258,8 @@ function Lifestyle() {
   const { t, assets: { living, bath, candleClose } } = useCMS()
   return (
     <section className="relative h-[100svh] min-h-[720px] overflow-hidden bg-blush text-logo md:h-[130vh] md:min-h-[760px]" aria-labelledby="life-t">
-      <Parallax speed={0.08} className="absolute inset-[-12%_0]"><img loading="lazy" src={living} alt="Sala de estar clara e acolhedora" className="h-full w-full object-cover opacity-70 sepia-[0.12] saturate-[0.9] md:opacity-65" /></Parallax>
-      <div className="absolute inset-0 bg-gradient-to-b from-blush/85 via-blush/50 to-blush/90 md:bg-gradient-to-r md:from-blush/95 md:via-blush/60 md:to-blush/35" />
+      <Parallax speed={0.06} className="absolute inset-[-10%_0]"><img loading="lazy" src={living} alt="Sala de estar clara e acolhedora" className="h-full w-full object-cover opacity-80 sepia-[0.04] saturate-[0.95] md:opacity-75" /></Parallax>
+      <div className="absolute inset-0 bg-gradient-to-b from-blush/68 via-blush/22 to-blush/78 md:bg-gradient-to-r md:from-blush/86 md:via-blush/36 md:to-blush/12" />
       <div className="absolute inset-x-0 top-0 h-px bg-gold/30" />
       <Parallax speed={0.16} className="absolute left-1/2 top-[10%] md:top-[18%]"><div className="arch h-[76svh] max-h-[650px] w-[64vw] max-w-[300px] -translate-x-1/2 border border-gold/45 md:h-[70vh] md:w-[34vw] md:max-w-none" /></Parallax>
       <Parallax speed={0.24} className="absolute -bottom-[5%] -right-[5%] w-[52vw] max-w-[220px] md:bottom-[8%] md:right-[8%] md:w-[24vw] md:max-w-[380px]"><Reveal><div className="clip arch aspect-[3/4.4] overflow-hidden border border-blush bg-blush p-1.5 shadow-2xl shadow-logo/10"><img loading="lazy" src={bath} alt="Sabonete líquido Gramado Aroma no lavabo" className="arch h-full w-full object-cover" /></div></Reveal></Parallax>
@@ -350,8 +378,8 @@ export function FinalCTA() {
   const { t, assets } = useCMS(); const { go } = useRouter()
   return (
     <section className="relative flex min-h-[88svh] items-center overflow-hidden bg-blush text-logo md:min-h-[100dvh]">
-      <Parallax speed={0.15} className="absolute inset-[-15%_0]"><img loading="lazy" src={assets.candleMany} alt="" className="h-full w-full object-cover opacity-55 sepia-[0.1] saturate-[1.08]" /></Parallax>
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(248,242,238,.32),rgba(248,242,238,.7))]" />
+      <Parallax speed={0.12} className="absolute inset-[-12%_0]"><img loading="lazy" src={assets.candleMany} alt="" className="h-full w-full object-cover opacity-68 sepia-[0.04] saturate-[0.96]" /></Parallax>
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(248,242,238,.16),rgba(248,242,238,.52))]" />
       <Reveal className="relative mx-auto w-full max-w-6xl px-[max(1.25rem,var(--sal))] text-center">
         <Sparkle className="fade-up mx-auto mb-10 text-gold" />
         <h2 className="font-serif text-[clamp(2.8rem,7.5vw,7.6rem)] font-light uppercase leading-[0.95]"><Lines lines={[t('cta.t1'), <em key="a" className="normal-case italic text-taupe">{t('cta.t2')}</em>, t('cta.t3')]} /></h2>
