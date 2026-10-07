@@ -117,7 +117,7 @@ export function Router({ children }: { children: (path: string) => ReactNode }) 
   const go = (p: string) => {
     if (p === path) { scrollTo({ top: 0, behavior: 'smooth' }); return }
     if (reduced()) { location.hash = p; scrollTo(0, 0); return }
-    setLabel(p === '/' ? 'Gramado Aroma' : p.split('/')[1].replace(/-/g, ' '))
+    setLabel(p === '/' ? 'São Paulo Aroma' : p.split('/')[1].replace(/-/g, ' '))
     setPhase('cover')
     setTimeout(() => { location.hash = p; setPath(p); scrollTo(0, 0); setPhase('reveal') }, 900)
     setTimeout(() => setPhase('idle'), 1900)
@@ -145,16 +145,16 @@ export function Loader({ onDone }: { onDone: () => void }) {
   }, [])
   const word = (w: string, d: number) => <span className="flex overflow-hidden">{w.split('').map((c, i) => <span key={i} className="inline-block transition-transform duration-[1200ms] ease-out-lux" style={{ transform: ready ? 'none' : 'translateY(105%)', transitionDelay: `${d + i * 0.06}s` }}>{c}</span>)}</span>
   return (
-    <div role="status" aria-label="Carregando Gramado Aroma" className="fixed inset-0 z-[90]">
+    <div role="status" aria-label="Carregando São Paulo Aroma" className="fixed inset-0 z-[90]">
       <div className={`absolute inset-x-0 top-0 h-1/2 bg-ivory transition-transform duration-[1300ms] ease-lux ${out ? '-translate-y-full' : ''}`} />
       <div className={`absolute inset-x-0 bottom-0 h-1/2 bg-ivory transition-transform duration-[1300ms] ease-lux ${out ? 'translate-y-full' : ''}`} />
       <div className={`absolute inset-0 flex flex-col items-center justify-center transition-all duration-700 ease-out-lux ${out ? 'scale-95 opacity-0' : ''}`}>
         <div className={`mb-6 h-px bg-gold transition-all duration-[1600ms] ease-out-lux ${ready ? 'w-10' : 'w-0'}`} />
-        <div className="font-serif text-[clamp(2.6rem,7vw,5.5rem)] font-light leading-[0.95] tracking-[0.18em] text-soft">{word('GRAMADO', 0.1)}</div>
+        <div className="font-serif text-[clamp(2.6rem,7vw,5.5rem)] font-light leading-[0.95] tracking-[0.18em] text-soft">{word('SÃO PAULO', 0.1)}</div>
         <div className="mt-3 text-[clamp(.8rem,1.4vw,1.1rem)] tracking-[0.9em] text-taupe">{word('AROMA', 0.6)}</div>
         <div className="absolute bottom-12 left-1/2 w-48 -translate-x-1/2">
           <div className="h-px w-full bg-beige"><div className="h-px bg-gold" style={{ width: `${n}%` }} /></div>
-          <div className="eyebrow mt-3 flex justify-between text-taupe"><span>Gramado · RS</span><span className="tabular-nums">{String(n).padStart(3, '0')}</span></div>
+          <div className="eyebrow mt-3 flex justify-between text-taupe"><span>São Paulo · SP</span><span className="tabular-nums">{String(n).padStart(3, '0')}</span></div>
         </div>
       </div>
     </div>

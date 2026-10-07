@@ -152,7 +152,7 @@ export function About() {
       {/* sticky chapter timeline: number column pins while chapters scroll */}
       <section className="py-28 md:py-44">
         <Container className="grid gap-16 lg:grid-cols-12">
-          <div className="hidden lg:col-span-3 lg:block"><div className="sticky top-40"><Botanical className="h-72 text-gold/40" /><p className="mt-6 font-script text-4xl text-gold">Gramado, RS</p></div></div>
+          <div className="hidden lg:col-span-3 lg:block"><div className="sticky top-40"><Botanical className="h-72 text-gold/40" /><p className="mt-6 font-script text-4xl text-gold">São Paulo, SP</p></div></div>
           <div className="space-y-32 md:space-y-48 lg:col-span-9">
             {chapters.map(([img, h, b], i) => (
               <Reveal key={h} className={`grid items-center gap-10 md:grid-cols-2 md:gap-16 ${i % 2 ? 'md:[&>*:first-child]:order-2' : ''}`}>

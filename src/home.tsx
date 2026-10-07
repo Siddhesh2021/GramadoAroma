@@ -18,7 +18,7 @@ function Hero({ ready }: { ready: boolean }) {
       <div className="hero-grain absolute inset-0" aria-hidden="true" />
       <Parallax speed={-0.1} className="absolute bottom-[-6%] right-[6%] hidden w-[22vw] max-w-[340px] md:block">
         <div className="hero-candle arch clip relative aspect-[3/4.2] overflow-hidden border border-gold/40 bg-mist p-2" style={{ transitionDelay: '.6s' }}>
-          <img src={assets.candleTable} alt="Vela aromática Gramado Aroma" className="arch h-full w-full object-cover" style={{ transitionDelay: '.6s' }} />
+          <img src={assets.candleTable} alt="Vela aromática São Paulo Aroma" className="arch h-full w-full object-cover" style={{ transitionDelay: '.6s' }} />
           <span className="hero-candle-smoke" aria-hidden="true">
             <i className="hero-candle-smoke-puff hero-candle-smoke-puff-a" />
             <i className="hero-candle-smoke-puff hero-candle-smoke-puff-b" />
@@ -81,7 +81,7 @@ function Story() {
           {/* Sized to roughly match the text column. It used to be aspect-3/4.3
               at w-85% plus mt-24, which rendered ~740px tall against ~500px of
               copy and left a large dead zone under the quote. */}
-          <div className="clip arch relative mx-auto aspect-[4/5] w-[76%] overflow-hidden lg:mt-8"><Parallax speed={0.12} scale={1.2} className="absolute inset-0"><img loading="lazy" src={assets.diffuser} alt="Difusor de aromas Gramado Aroma" className="h-full w-full object-cover" /></Parallax></div>
+          <div className="clip arch relative mx-auto aspect-[4/5] w-[76%] overflow-hidden lg:mt-8"><Parallax speed={0.12} scale={1.2} className="absolute inset-0"><img loading="lazy" src={assets.diffuser} alt="Difusor de aromas São Paulo Aroma" className="h-full w-full object-cover" /></Parallax></div>
           <Parallax speed={-0.18} className="relative -mt-[15%] -ml-[25%] w-[42%]"><div className="clip aspect-square overflow-hidden border-8 border-ivory bg-ivory" style={{ transitionDelay: '.3s' }}><img loading="lazy" src={assets.candleTea} alt="" className="h-full w-full object-cover" /></div></Parallax>
           <div className="arch pointer-events-none absolute left-[3%] top-[-3%] aspect-[4/5] w-[80%] border border-gold/40 lg:top-[calc(3rem-3%)] lg:ml-[4.5%]" />
         </Reveal>
@@ -290,7 +290,7 @@ function Lifestyle() {
       <div className="lifestyle-wash absolute inset-0 bg-gradient-to-b from-blush/68 via-blush/22 to-blush/78 md:bg-gradient-to-r md:from-blush/86 md:via-blush/36 md:to-blush/12" />
       <div className="absolute inset-x-0 top-0 h-px bg-gold/30" />
       <Parallax speed={0.16} className="absolute left-1/2 top-[10%] md:top-[18%]"><div className="arch h-[76svh] max-h-[650px] w-[64vw] max-w-[300px] -translate-x-1/2 border border-gold/45 md:h-[70vh] md:w-[34vw] md:max-w-none" /></Parallax>
-      <Parallax speed={0.18} className="lifestyle-product absolute -bottom-[2%] -right-[3%] w-[48vw] max-w-[220px] md:bottom-[8%] md:right-[8%] md:w-[24vw] md:max-w-[380px]"><Reveal><div className="clip arch aspect-[3/4.4] overflow-hidden border border-blush bg-blush p-1.5 shadow-2xl shadow-logo/10"><img loading="lazy" src={bath} alt="Sabonete líquido Gramado Aroma no lavabo" className="arch h-full w-full object-cover" /></div></Reveal></Parallax>
+      <Parallax speed={0.18} className="lifestyle-product absolute -bottom-[2%] -right-[3%] w-[48vw] max-w-[220px] md:bottom-[8%] md:right-[8%] md:w-[24vw] md:max-w-[380px]"><Reveal><div className="clip arch aspect-[3/4.4] overflow-hidden border border-blush bg-blush p-1.5 shadow-2xl shadow-logo/10"><img loading="lazy" src={bath} alt="Sabonete líquido São Paulo Aroma no lavabo" className="arch h-full w-full object-cover" /></div></Reveal></Parallax>
       <Parallax speed={0.28} className="absolute left-[6%] top-[14%] hidden w-[16vw] md:block"><Reveal><div className="clip aspect-square overflow-hidden" style={{ transitionDelay: '.2s' }}><img loading="lazy" src={candleClose} alt="" className="h-full w-full object-cover" /></div></Reveal></Parallax>
       <Parallax speed={-0.1} className="absolute inset-x-0 top-[27%] z-20 md:top-[40%]">
         <Reveal as="div" className="mx-auto max-w-[1600px] px-[max(1.25rem,var(--sal))] md:px-[max(2.5rem,var(--sar))]">

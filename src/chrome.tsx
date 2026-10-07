@@ -16,7 +16,7 @@ export const LangSwitch = ({ light }: { light?: boolean }) => {
 export function WhatsAppFab() {
   const { settings } = useCMS()
   return (
-    <a href={`https://wa.me/${settings.whatsapp}`} target="_blank" rel="noreferrer" aria-label="Falar com a Gramado Aroma pelo WhatsApp" title="WhatsApp" className="whatsapp-fab fixed bottom-[calc(1.25rem+var(--sab))] right-[max(1.25rem,var(--sar))] z-[58] flex h-14 w-14 items-center justify-center rounded-full bg-[#2f6b4f] text-cream shadow-lg shadow-soft/20 transition-transform duration-500 hover:scale-105 active:scale-95">
+    <a href={`https://wa.me/${settings.whatsapp}`} target="_blank" rel="noreferrer" aria-label="Falar com a São Paulo Aroma pelo WhatsApp" title="WhatsApp" className="whatsapp-fab fixed bottom-[calc(1.25rem+var(--sab))] right-[max(1.25rem,var(--sar))] z-[58] flex h-14 w-14 items-center justify-center rounded-full bg-[#2f6b4f] text-cream shadow-lg shadow-soft/20 transition-transform duration-500 hover:scale-105 active:scale-95">
       <MessageCircle strokeWidth={1.25} className="h-6 w-6" />
       <span className="hidden whitespace-nowrap text-xs font-semibold tracking-[.12em]">WhatsApp</span>
     </a>
@@ -210,7 +210,7 @@ export function Footer() {
             <div><p className="eyebrow mb-4 !text-[10px] text-taupe">{t('footer.social')}</p><ul className="space-y-1 text-sm text-logo/80"><li><a href={`https://instagram.com/${settings.instagram}`} target="_blank" rel="noreferrer" className="tap-y flex items-center gap-2 py-1 hover:text-gold active:opacity-60"><Instagram strokeWidth={1} className="h-4 w-4" />Instagram</a></li><li><a href={`https://facebook.com/${settings.facebook}`} target="_blank" rel="noreferrer" className="tap-y flex items-center gap-2 py-1 hover:text-gold active:opacity-60"><Facebook strokeWidth={1} className="h-4 w-4" />Facebook</a></li></ul><div className="mt-6"><LangSwitch /></div></div>
           </div>
         </div>
-        <div className="mt-20 select-none text-center font-script text-[clamp(4rem,20vw,19rem)] leading-[0.8] text-logo/[0.07] md:mt-28" aria-hidden>Gramado</div>
+        <div className="mt-20 select-none text-center font-script text-[clamp(4rem,20vw,19rem)] leading-[0.8] text-logo/[0.07] md:mt-28" aria-hidden>São Paulo</div>
         {/* safe-b sets padding-bottom outright and outranks py-*, so the design
             padding is expressed additively here — otherwise this bar loses its
             2rem and sits flush against the gesture bar. */}

@@ -77,7 +77,7 @@ export const POSTS: Post[] = [
   [0, 0, 'post', 'Conheça nossas coleções'], [3, 0, 'reel', 'Difusor ao entardecer'], [5, 0, 'post', 'Vela e flores'],
   [1, 1, 'reel', 'Muda o clima da casa'], [2, 1, 'post', 'Com nossas velas'], [3, 1, 'post', 'Relaxe, respire'],
   [4, 1, 'post', 'Difusor vs. Home Spray'], [0, 2, 'reel', 'Já reparou?'], [1, 2, 'post', 'Presente'], [4, 2, 'post', 'Dia das mães'],
-].map(([c, r, t, title], i) => ({ id: 'ig' + i, col: c as number, row: r as number, type: t as 'post' | 'reel', title: title as string, url: 'https://instagram.com/gramadoaromaoficial', featured: i < 8 }))
+].map(([c, r, t, title], i) => ({ id: 'ig' + i, col: c as number, row: r as number, type: t as 'post' | 'reel', title: title as string, url: 'https://instagram.com/saopauloaroma', featured: i < 8 }))
 
 export type NavItem = { id: string; label: L; url: string; order: number; visible: boolean; external: boolean }
 export const NAV: NavItem[] = [
@@ -89,16 +89,16 @@ export const NAV: NavItem[] = [
 ]
 
 export const SETTINGS = {
-  brand: 'Gramado Aroma', whatsapp: '5554999999999', phone: '+55 (54) 99999-9999', email: 'contato@gramadoaroma.com.br',
-  address: 'Gramado · Rio Grande do Sul · Brasil', instagram: 'gramadoaromaoficial', facebook: 'gramadoaroma',
-  mapUrl: 'https://www.openstreetmap.org/export/embed.html?bbox=-50.92%2C-29.40%2C-50.84%2C-29.35&layer=mapnik&marker=-29.3746%2C-50.8764',
+  brand: 'São Paulo Aroma', whatsapp: '5554999999999', phone: '+55 (54) 99999-9999', email: 'contato@saopauloaroma.com.br',
+  address: 'São Paulo · São Paulo · Brasil', instagram: 'saopauloaroma', facebook: 'saopauloaroma',
+  mapUrl: 'https://www.openstreetmap.org/export/embed.html?bbox=-46.70%2C-23.60%2C-46.56%2C-23.50&layer=mapnik&marker=-23.5505%2C-46.6333',
   hours: { pt: 'Seg a Sex · 9h às 18h · Sáb · 9h às 13h', en: 'Mon to Fri · 9am to 6pm · Sat · 9am to 1pm' } as L,
   currency: 'BRL', defaultLang: 'pt' as Lang,
 }
 
 export const SECTIONS = [
   { id: 'hero', label: 'Hero', on: true }, { id: 'story', label: 'Brand Story', on: true }, { id: 'collection', label: 'Featured Products', on: true },
-  { id: 'fragrances', label: 'Fragrances', on: true }, { id: 'why', label: 'Why Gramado Aroma', on: true }, { id: 'lifestyle', label: 'Lifestyle', on: true },
+  { id: 'fragrances', label: 'Fragrances', on: true }, { id: 'why', label: 'Why São Paulo Aroma', on: true }, { id: 'lifestyle', label: 'Lifestyle', on: true },
   { id: 'reviews', label: 'Testimonials', on: true }, { id: 'instagram', label: 'Instagram', on: true }, { id: 'cta', label: 'CTA', on: true },
 ]
 
@@ -114,29 +114,29 @@ export type OrderLead = {
 // Translation dictionary: key -> [pt, en]. Group = first segment.
 export const T: Record<string, [string, string]> = {
   'nav.cart': ['Sacola', 'Bag'], 'nav.menu': ['Menu', 'Menu'], 'nav.close': ['Fechar', 'Close'],
-  'hero.label': ['Fragrâncias para casa · Gramado, RS', 'Home fragrance · Gramado, Brazil'],
+  'hero.label': ['Fragrâncias para casa · São Paulo, SP', 'Home fragrance · São Paulo, Brazil'],
   'hero.title1': ['A fragrância que', 'Fragrance that'], 'hero.title2': ['transforma espaços.', 'transforms spaces.'],
   'hero.sub': ['Aromas pensados para transformar momentos cotidianos em experiências.', 'Scents designed to turn everyday moments into experiences.'],
-  'hero.cta': ['Explorar coleção', 'Explore collection'], 'hero.cta2': ['Conheça a Gramado Aroma', 'Discover Gramado Aroma'], 'hero.scroll': ['Role', 'Scroll'],
+  'hero.cta': ['Explorar coleção', 'Explore collection'], 'hero.cta2': ['Conheça a São Paulo Aroma', 'Discover São Paulo Aroma'], 'hero.scroll': ['Role', 'Scroll'],
   'story.t1': ['Mais que um aroma.', 'More than a scent.'], 'story.t2': ['A experiência.', 'The experience.'],
-  'story.body': ['Cada aroma tem o poder de transformar um espaço, despertar uma memória e criar um momento. Gramado Aroma nasceu para tornar esses pequenos momentos ainda mais especiais.', 'Every scent has the power to transform a space, awaken a memory and create a moment. Gramado Aroma was born to make those small moments even more special.'],
+  'story.body': ['Cada aroma tem o poder de transformar um espaço, despertar uma memória e criar um momento. São Paulo Aroma nasceu para tornar esses pequenos momentos ainda mais especiais.', 'Every scent has the power to transform a space, awaken a memory and create a moment. São Paulo Aroma was born to make those small moments even more special.'],
   'story.quote': ['Relaxe, respire e sinta o aroma.', 'Relax, breathe and feel the scent.'],
   'col.title': ['Nossas coleções', 'Our collections'], 'col.sub': ['Velas, difusores, home sprays e sabonetes — cada peça pensada para um canto da casa.', 'Candles, diffusers, home sprays and soaps — each piece made for a corner of your home.'], 'col.drag': ['Arraste', 'Drag'],
   'frag.title': ['Encontre o seu aroma', 'Find your scent'], 'frag.cta': ['Ver produtos', 'See products'],
-  'why.title': ['Por que Gramado Aroma?', 'Why Gramado Aroma?'],
+  'why.title': ['Por que São Paulo Aroma?', 'Why São Paulo Aroma?'],
   'why.1': ['Aromas que acolhem', 'Scents that embrace'], 'why.1d': ['Fragrâncias pensadas para criar uma atmosfera de conforto desde a porta de entrada.', 'Fragrances crafted to create comfort from the front door in.'],
   'why.2': ['Design que transforma', 'Design that transforms'], 'why.2d': ['Peças que decoram tanto quanto perfumam — vidro, lata e linhas delicadas.', 'Pieces that decorate as much as they fragrance — glass, tin and delicate lines.'],
   'why.3': ['Qualidade em cada detalhe', 'Quality in every detail'], 'why.3d': ['Do aroma à embalagem, cuidado em cada etapa até chegar à sua casa.', 'From scent to packaging, care at every step until it reaches your home.'],
   'why.4': ['Momentos que permanecem', 'Moments that linger'], 'why.4d': ['Um aroma pode mudar completamente a atmosfera de um espaço — e ficar na memória.', 'A scent can completely change the atmosphere of a space — and stay in memory.'],
   'life.t1': ['Sua casa', 'Your home'], 'life.t2': ['é uma experiência.', 'is an experience.'], 'life.body': ['Da sala ao lavabo, do quarto à mesa posta. Transforme pequenos momentos em experiências.', 'From living room to powder room, bedroom to set table. Turn small moments into experiences.'],
-  'rev.title1': ['Quem vive a experiência', 'Those who live the'], 'rev.title2': ['Gramado Aroma', 'Gramado Aroma experience'], 'rev.all': ['Ver todas as avaliações', 'See all reviews'], 'rev.bought': ['Comprou', 'Purchased'],
+  'rev.title1': ['Quem vive a experiência', 'Those who live the'], 'rev.title2': ['São Paulo Aroma', 'São Paulo Aroma experience'], 'rev.all': ['Ver todas as avaliações', 'See all reviews'], 'rev.bought': ['Comprou', 'Purchased'],
   'ig.title': ['Siga o aroma', 'Follow the scent'], 'ig.view': ['Ver no Instagram', 'View on Instagram'],
   'cta.t1': ['Seu espaço', 'Your space'], 'cta.t2': ['merece um aroma', 'deserves a special'], 'cta.t3': ['especial.', 'scent.'], 'cta.btn': ['Explorar produtos', 'Explore products'],
   'prod.title': ['Nossos produtos', 'Our products'], 'prod.sub': ['Encontre o aroma perfeito para cada espaço e momento.', 'Find the perfect scent for every space and moment.'], 'prod.add': ['Adicionar à sacola', 'Add to bag'],
   'prod.all': ['Todos', 'All'], 'prod.allFrag': ['Todos os aromas', 'All scents'], 'prod.count': ['peças', 'pieces'], 'prod.view': ['Ver produto', 'View product'], 'prod.quick': ['Espiar', 'Quick view'],
   'prod.in': ['Disponível', 'In stock'], 'prod.out': ['Indisponível', 'Unavailable'], 'prod.empty': ['Nenhum produto encontrado', 'No products found'], 'prod.emptyD': ['Tente outra combinação de categoria e aroma.', 'Try another category and scent combination.'], 'prod.clear': ['Limpar filtros', 'Clear filters'],
   'pdp.size': ['Tamanho', 'Size'], 'pdp.qty': ['Quantidade', 'Quantity'], 'pdp.add': ['Adicionar à sacola', 'Add to bag'], 'pdp.wa': ['Comprar via WhatsApp', 'Buy via WhatsApp'], 'pdp.notes': ['Notas', 'Notes'],
-  'pdp.details': ['Detalhes do produto', 'Product details'], 'pdp.detailsD': ['Recipiente em vidro ou lata, conforme o modelo. Rótulo Gramado Aroma. Consulte a embalagem para composição completa.', 'Glass or tin vessel depending on model. Gramado Aroma label. See packaging for full composition.'],
+  'pdp.details': ['Detalhes do produto', 'Product details'], 'pdp.detailsD': ['Recipiente em vidro ou lata, conforme o modelo. Rótulo São Paulo Aroma. Consulte a embalagem para composição completa.', 'Glass or tin vessel depending on model. São Paulo Aroma label. See packaging for full composition.'],
   'pdp.ship': ['Envio', 'Shipping'], 'pdp.shipD': ['Pedidos finalizados pelo WhatsApp. Confirmamos disponibilidade, frete e prazo para o seu CEP.', 'Orders are completed via WhatsApp. We confirm availability, shipping and delivery time for your postcode.'],
   'pdp.care': ['Cuidados', 'Care'], 'pdp.careD': ['Nunca deixe a vela acesa sem supervisão. Na primeira queima, mantenha acesa até a superfície derreter por completo. Mantenha longe de crianças e animais.', 'Never leave a lit candle unattended. On first burn, keep it lit until the surface melts fully. Keep away from children and pets.'],
   'pdp.related': ['Você também pode gostar', 'You may also like'], 'pdp.added': ['adicionado à sacola', 'added to your bag'], 'pdp.unavailable': ['Este produto está temporariamente indisponível. Fale conosco para ser avisado.', 'This product is temporarily unavailable. Contact us to be notified.'],
@@ -145,9 +145,9 @@ export const T: Record<string, [string, string]> = {
   'form.title': ['Seus dados', 'Your details'], 'form.sub': ['Enviaremos estas informações junto ao pedido no WhatsApp. Sem cadastro.', 'We will send these details with your order on WhatsApp. No account needed.'],
   'form.name': ['Nome completo', 'Full name'], 'form.phone': ['Telefone', 'Phone'], 'form.email': ['E-mail', 'Email'], 'form.cep': ['CEP', 'Postcode'], 'form.street': ['Endereço', 'Street'], 'form.number': ['Número', 'Number'], 'form.comp': ['Complemento', 'Complement'], 'form.district': ['Bairro', 'District'], 'form.city': ['Cidade', 'City'], 'form.state': ['Estado', 'State'], 'form.notes': ['Observações', 'Notes'], 'form.save': ['Salvar meus dados neste dispositivo', 'Save my details on this device'],
   'form.back': ['Voltar', 'Back'], 'form.send': ['Enviar pedido pelo WhatsApp', 'Send order via WhatsApp'], 'form.required': ['Campo obrigatório', 'Required field'], 'form.invalidEmail': ['E-mail inválido', 'Invalid email'], 'form.invalidPhone': ['Telefone inválido', 'Invalid phone'],
-  'wa.hello': ['Olá, Gramado Aroma! Gostaria de fazer um pedido:', 'Hello, Gramado Aroma! I would like to place an order:'], 'wa.data': ['Meus dados:', 'My details:'], 'wa.confirm': ['Por favor, confirmem a disponibilidade e a entrega.', 'Please confirm availability and delivery.'], 'wa.product': ['Olá! Tenho interesse no produto:', 'Hello! I am interested in:'],
-  'about.t1': ['Sobre a', 'About'], 'about.t2': ['Gramado Aroma', 'Gramado Aroma'], 'about.sub': ['A arte de transformar espaços através dos aromas.', 'The art of transforming spaces through scent.'],
-  'about.h1': ['Nossa História', 'Our Story'], 'about.b1': ['Nascemos em Gramado, cidade onde a neblina, o frio e o aconchego fazem parte do cotidiano. Foi daí que veio a vontade de levar essa sensação de casa para outros lares.', 'We were born in Gramado, a town where mist, cold and cosiness are part of daily life. That is where the wish to bring this feeling of home to other homes came from.'],
+  'wa.hello': ['Olá, São Paulo Aroma! Gostaria de fazer um pedido:', 'Hello, São Paulo Aroma! I would like to place an order:'], 'wa.data': ['Meus dados:', 'My details:'], 'wa.confirm': ['Por favor, confirmem a disponibilidade e a entrega.', 'Please confirm availability and delivery.'], 'wa.product': ['Olá! Tenho interesse no produto:', 'Hello! I am interested in:'],
+  'about.t1': ['Sobre a', 'About'], 'about.t2': ['São Paulo Aroma', 'São Paulo Aroma'], 'about.sub': ['A arte de transformar espaços através dos aromas.', 'The art of transforming spaces through scent.'],
+  'about.h1': ['Nossa História', 'Our Story'], 'about.b1': ['Nascemos em São Paulo, cidade onde a energia, a diversidade e o ritmo fazem parte do cotidiano. Foi daí que veio a vontade de levar essa sensação de lar para outros lares.', 'We were born in São Paulo, a city where energy, diversity and rhythm are part of daily life. That is where the wish to bring this feeling of home to other homes came from.'],
   'about.h2': ['Nossa Essência', 'Our Essence'], 'about.b2': ['Acreditamos que o lar é o lugar mais importante do mundo. Cada fragrância é escolhida para acolher, acalmar e criar memórias.', 'We believe home is the most important place in the world. Each fragrance is chosen to embrace, calm and create memories.'],
   'about.h3': ['O Poder dos Aromas', 'The Power of Scent'], 'about.b3': ['O olfato é a nossa máquina do tempo particular. Um aroma pode mudar completamente a atmosfera de um espaço — e nos levar de volta a um momento.', 'Smell is our personal time machine. A scent can completely change the atmosphere of a space — and take us back to a moment.'],
   'about.h4': ['Nossa Filosofia', 'Our Philosophy'], 'about.b4': ['Menos ruído, mais presença. Peças bonitas, aromas marcantes e cuidado em cada detalhe — do rótulo à entrega.', 'Less noise, more presence. Beautiful pieces, memorable scents and care in every detail — from label to delivery.'],
@@ -158,7 +158,7 @@ export const T: Record<string, [string, string]> = {
   'footer.statement': ['Fragrâncias para casa que transformam pequenos momentos em experiências.', 'Home fragrances that turn small moments into experiences.'], 'footer.nav': ['Navegação', 'Navigation'], 'footer.service': ['Atendimento', 'Customer care'], 'footer.social': ['Social', 'Social'],
   'footer.news': ['Receba novidades e inspirações.', 'Receive news and inspiration.'], 'footer.newsBtn': ['Cadastrar', 'Subscribe'], 'footer.newsOk': ['Obrigado! Você receberá nossas novidades.', 'Thank you! You will receive our news.'], 'footer.privacy': ['Política de Privacidade', 'Privacy Policy'], 'footer.terms': ['Termos de Uso', 'Terms of Use'], 'footer.rights': ['Todos os direitos reservados.', 'All rights reserved.'],
   '404.title': ['Este aroma se perdeu.', 'This scent drifted away.'], '404.sub': ['A página que você procura não existe ou mudou de lugar.', 'The page you are looking for does not exist or has moved.'], '404.cta': ['Voltar ao início', 'Back home'],
-  'seo.home': ['Gramado Aroma — Fragrâncias para casa', 'Gramado Aroma — Home fragrance'],
+  'seo.home': ['São Paulo Aroma — Fragrâncias para casa', 'São Paulo Aroma — Home fragrance'],
 }
 
 export type Store = {
@@ -175,8 +175,8 @@ export type Store = {
   assets: typeof IMG; setAssets: (a: typeof IMG) => void
   leads: OrderLead[]; setLeads: (l: OrderLead[]) => void; addLead: (l: OrderLead) => void
 }
-const contextRegistry = globalThis as typeof globalThis & { __gramadoAromaCMS?: Context<Store | null> }
-const Ctx = contextRegistry.__gramadoAromaCMS ??= createContext<Store | null>(null)
+const contextRegistry = globalThis as typeof globalThis & { __saoPauloAromaCMS?: Context<Store | null> }
+const Ctx = contextRegistry.__saoPauloAromaCMS ??= createContext<Store | null>(null)
 export const useCMS = () => {
   const store = useContext(Ctx)
   if (!store) throw new Error('useCMS must be used inside CMSProvider')
@@ -188,7 +188,7 @@ type PersistedCMS = {
   settings: typeof SETTINGS; sections: typeof SECTIONS; fragrances: Fragrance[]
   categories: CategoryItem[]; assets: typeof IMG; leads: OrderLead[]
 }
-const STORAGE_KEY = 'gramado-aroma-cms-v2'
+const STORAGE_KEY = 'sao-paulo-aroma-cms-v1'
 const loadCMS = (): Partial<PersistedCMS> => {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') }
   catch { return {} }

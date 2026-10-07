@@ -35,7 +35,7 @@ export default function App() {
   return (
     <CMSProvider>
       <CartProvider>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Organization', name: 'Gramado Aroma', url: 'https://gramadoaroma.com.br', sameAs: ['https://instagram.com/gramadoaromaoficial'] }) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Organization', name: 'São Paulo Aroma', url: 'https://saopauloaroma.com.br', sameAs: ['https://instagram.com/saopauloaroma'] }) }} />
         <Router>{(path) => <Site path={path} ready={!loading} />}</Router>
         {loading && <Loader onDone={() => setLoading(false)} />}
         <div className="grain" aria-hidden />

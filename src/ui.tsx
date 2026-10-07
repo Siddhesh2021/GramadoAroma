@@ -30,7 +30,7 @@ export const Stars = ({ n }: { n: number }) => <span className="inline-flex gap-
 
 export const Logo = ({ light }: { light?: boolean }) => (
   <span className={`flex flex-col items-center leading-none ${light ? 'text-cream' : 'text-logo'}`}>
-    <span className="font-script text-[1.9rem] leading-[0.8]">Gramado</span>
+    <span className="font-script text-[1.9rem] leading-[0.8]">São Paulo</span>
     <span className="mt-1 text-[8px] tracking-[0.55em] pl-[0.55em]">AROMA</span>
   </span>
 )
@@ -112,19 +112,19 @@ export function ProductCard({ p, tall, onQuick }: { p: Product; tall?: boolean; 
   )
 }
 
-/* Instagram tile — crops the real @gramadoaromaoficial grid screenshot */
+/* Instagram tile — display-only, no outbound links */
 export function IgTile({ post, className = '' }: { post: Post; className?: string }) {
-  const { t, assets } = useCMS()
+  const { assets } = useCMS()
   const bx = ((16 + post.col * 203) / (1237 - 203)) * 100, by = ((9 + post.row * 270) / (887 - 270)) * 100
   return (
-    <a href={post.url} target="_blank" rel="noreferrer" data-cursor="view" data-cursor-label="Instagram" className={`group relative block overflow-hidden bg-mist ${className}`} aria-label={`${post.title} — ${t('ig.view')}`}>
+    <div role="img" aria-label={post.title} className={`group relative block overflow-hidden bg-mist ${className}`}>
       <div className="absolute inset-0 transition-transform duration-[1400ms] ease-out-lux group-hover:scale-110" style={{ backgroundImage: `url(${assets.igGrid})`, backgroundSize: '609% 328%', backgroundPosition: `${bx}% ${by}%` }} />
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-soft/0 text-cream opacity-0 transition-all duration-700 ease-out-lux group-hover:bg-soft/55 group-hover:opacity-100">
         {post.type === 'reel' ? <Play strokeWidth={1} className="h-6 w-6" /> : <Instagram strokeWidth={1} className="h-6 w-6" />}
-        <span className="eyebrow !text-[9px]">{t('ig.view')}</span>
+        <span className="eyebrow !text-[9px]">{post.title}</span>
       </div>
       {post.type === 'reel' && <Play strokeWidth={1.2} className="absolute right-3 top-3 h-4 w-4 fill-cream/80 text-cream" />}
-    </a>
+    </div>
   )
 }
 
