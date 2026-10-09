@@ -1,10 +1,15 @@
 {
-  "description": "Experience the elegance of Brazilian home fragrances with a premium website that showcases aromatic products through immersive storytelling and sophisticated design.",
+  "description": "Aromas pensados para transformar momentos cotidianos em experiências. Conheça as velas, difusores, home sprays e fragrâncias da Gramado Aroma.",
   "robots": {
-    "index": false
+    "index": true
   },
   "accessibility": {
     "addBypassLinks": false,
     "ignoreReducedMotion": false
+  },
+  "title": "Gramado Aroma — Fragrâncias para casa",
+  "language": "pt-BR",
+  "openGraph": {
+    "image": "https://gramado-aroma.vercel.app/gramado-aroma-share.jpg"
   }
 }
