@@ -1,5 +1,5 @@
 {
-  "description": "Descubra fragrâncias para casa que transformam pequenos momentos em experiências. Explore velas aromáticas, difusores e home sprays da São Paulo Aroma.",
+  "description": "Descubra fragrâncias para casa que transformam pequenos momentos em experiências. Explore velas aromáticas, difusores e home sprays da Gramado Aroma.",
   "robots": {
     "index": true
   },
@@ -7,9 +7,9 @@
     "addBypassLinks": false,
     "ignoreReducedMotion": false
   },
-  "title": "São Paulo Aroma — Fragrâncias para casa",
+  "title": "Gramado Aroma — Fragrâncias para casa",
   "language": "pt-BR",
   "openGraph": {
-    "image": "https://sao-paulo-aroma.vercel.app/gramado-aroma-share.jpg"
+    "image": "https://gramado-aroma.vercel.app/og-image.svg"
   }
 }
