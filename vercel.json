@@ -2,6 +2,17 @@
   "rewrites": [
     {
       "source": "/produto/:id",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(WhatsApp|facebookexternalhit|Facebot|Twitterbot|TelegramBot|LinkedInBot|Discordbot|Slackbot|Googlebot).*"
+        }
+      ],
+      "destination": "/api/share?path=/produto/:id"
+    },
+    {
+      "source": "/produto/:id",
       "destination": "/index.html"
     },
     {
