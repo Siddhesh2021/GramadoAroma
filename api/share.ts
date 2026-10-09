@@ -18,7 +18,7 @@ type Product = {
  */
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const productId = String(req.query.path || '').replace(/^\/produto\//, '').split('/')[0]
-  const origin = 'https://gramado-aroma.vercel.app'
+  const origin = String(process.env.SITE_URL || 'https://gramado-aroma.vercel.app').replace(/\/$/, '')
 
   if (!productId || productId.includes('..')) {
     return res.redirect(302, origin)
