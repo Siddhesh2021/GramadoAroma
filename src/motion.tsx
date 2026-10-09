@@ -108,7 +108,14 @@ export function Cursor() {
 type RouterCtx = { path: string; go: (p: string) => void }
 const RC = createContext<RouterCtx>(null!)
 export const useRouter = () => useContext(RC)
-const read = () => location.hash.replace(/^#/, '') || '/'
+const read = () => {
+  const rawHash = location.hash.replace(/^#/, '')
+  // Public product URLs are shareable path URLs; existing navigation keeps
+  // working with the current hash router.
+  if (rawHash) return rawHash
+  const match = location.pathname.match(/^\/produto\/([^/]+)\/?$/)
+  return match ? `/produto/${decodeURIComponent(match[1])}` : '/'
+}
 export function Router({ children }: { children: (path: string) => ReactNode }) {
   const [path, setPath] = useState(read)
   const [phase, setPhase] = useState<'idle' | 'cover' | 'reveal'>('idle')
