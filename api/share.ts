@@ -54,7 +54,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     : `${product.name[lang]} | Gramado Aroma`
   const description = product.desc[lang]
   const url = `${origin}/produto/${encodeURIComponent(product.id)}`
-  const image = product.imgs[0] || origin + '/gramado-aroma-share.jpg'
+  // For social previews we prefer a public product image. Keep the brand fallback
+  // for any entry that does not yet have its own image.
+  const image = product.imgs[0] || `${origin}/gramado-aroma-share.jpg`
   const escape = (value: string) => value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
   res.setHeader('Content-Type', 'text/html; charset=utf-8')
