@@ -209,9 +209,14 @@ export function CMSProvider({ children }: { children: ReactNode }) {
   const [assets, setAssets] = useState(() => ({ ...IMG, ...saved.assets }))
   const [leads, setLeads] = useState<OrderLead[]>(() => saved.leads || [])
   useEffect(() => {
+    const index = lang === 'pt' ? 0 : 1
+    const title = dict['seo.home']?.[index] || 'São Paulo Aroma — Home fragrance'
+    const description = dict['hero.sub']?.[index] || 'Home fragrances that turn small moments into experiences.'
     document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en'
-    document.title = dict['seo.home'][lang === 'pt' ? 0 : 1]
-    document.querySelector('meta[name="description"]')?.setAttribute('content', dict['hero.sub'][lang === 'pt' ? 0 : 1])
+    document.title = title
+    document.querySelector('meta[name="description"]')?.setAttribute('content', description)
+    document.querySelector('meta[property="og:title"]')?.setAttribute('content', title)
+    document.querySelector('meta[property="og:description"]')?.setAttribute('content', description)
   }, [lang, dict])
   useEffect(() => { localStorage.setItem('ga-lang', lang) }, [lang])
   useEffect(() => {
