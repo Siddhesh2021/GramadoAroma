@@ -110,9 +110,11 @@ const RC = createContext<RouterCtx>(null!)
 export const useRouter = () => useContext(RC)
 const read = () => {
   const rawHash = location.hash.replace(/^#/, '')
-  // Public product URLs are shareable path URLs; existing navigation keeps
-  // working with the current hash router.
-  if (rawHash) return rawHash
+  // Support direct URLs for product pages while preserving the legacy hash URLs.
+  if (rawHash) {
+    if (rawHash === '/') return '/'
+    return rawHash
+  }
   const match = location.pathname.match(/^\/produto\/([^/]+)\/?$/)
   return match ? `/produto/${decodeURIComponent(match[1])}` : '/'
 }
