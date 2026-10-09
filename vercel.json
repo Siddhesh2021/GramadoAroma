@@ -6,7 +6,7 @@
         {
           "type": "header",
           "key": "user-agent",
-          "value": ".*(WhatsApp|facebookexternalhit|Facebot|Twitterbot|TelegramBot|LinkedInBot|Discordbot|Slackbot|Googlebot).*"
+          "value": "(?i).*(WhatsApp|facebookexternalhit|Facebot|Twitterbot|TelegramBot|LinkedInBot|Discordbot|Slackbot|Googlebot).*"
         }
       ],
       "destination": "/api/share?path=/produto/:id"
