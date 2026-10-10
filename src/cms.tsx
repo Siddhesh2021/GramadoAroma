@@ -9,7 +9,7 @@ const u = (id: string, w = 1400) => `https://images.unsplash.com/photo-${id}?aut
 // Some image hosts/URLs can fail intermittently. Keep images visible and swap to a
 // known, deterministic fallback instead of leaving a blank animated frame.
 export const IMAGE_FALLBACK = "https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&q=80&w=1200"
-export const withImageFallback = (event: React.SyntheticEvent<HTMLImageElement>) => {
+export const withImageFallback = (event: { currentTarget: HTMLImageElement }) => {
   const image = event.currentTarget
   if (image.dataset.fallbackApplied === "true") return
   image.dataset.fallbackApplied = "true"
