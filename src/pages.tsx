@@ -6,12 +6,12 @@ import { Instagram, ArrowBtn, TextLink, Sparkle, Botanical, Stars, ProductCard, 
 import { Container, InstagramGrid, FinalCTA } from './home'
 
 const PageHero = ({ eyebrow, lines, sub, children }: { eyebrow?: string; lines: ReactNode[]; sub?: string; children?: ReactNode }) => (
-  <Reveal as="header" className="relative overflow-hidden pb-16 pt-40 md:pb-24 md:pt-52" threshold={0}>
+  <Reveal as="header" className="relative overflow-hidden pb-10 pt-28 md:pb-14 md:pt-36" threshold={0}>
     <Parallax speed={-0.06} className="absolute -right-8 top-24 text-gold/25"><Botanical className="h-[440px]" /></Parallax>
     <Container className="relative">
       {eyebrow && <p className="fade-up eyebrow mb-8 flex items-center gap-3 text-gold"><Sparkle />{eyebrow}</p>}
       <h1 className="max-w-6xl font-serif text-[clamp(3rem,8vw,8rem)] font-light uppercase leading-[0.92] text-soft"><Lines lines={lines} delay={0.15} /></h1>
-      {sub && <p className="fade-up mt-10 max-w-md text-[17px] leading-relaxed text-taupe" style={{ transitionDelay: '.4s' }}>{sub}</p>}
+      {sub && <p className="fade-up mt-6 max-w-md text-[17px] leading-relaxed text-taupe" style={{ transitionDelay: '.4s' }}>{sub}</p>}
       {children}
     </Container>
   </Reveal>
@@ -71,12 +71,12 @@ export function Products({ query }: { query: string }) {
           <div className="-mx-1.5 flex items-center gap-4 overflow-x-auto px-1.5 [scrollbar-width:none]"><Chip on={frag === 'all'} onClick={() => setFrag('all')}>{t('prod.allFrag')}</Chip>{fragrances.map((f) => <Chip key={f.id} on={frag === f.id} onClick={() => setFrag(f.id)}><span className="mr-2 inline-block h-1.5 w-1.5 rounded-full align-middle" style={{ background: f.accent }} />{tr(f.name)}</Chip>)}</div>
         </Container>
       </div>
-      <Container className="py-20 md:py-28">
+      <Container className="pt-10 pb-16 md:pt-14 md:pb-20">
         {list.length === 0 ? (
           <div className="flex flex-col items-center py-24 text-center"><div className="arch mb-8 h-36 w-24 border border-gold/40" /><p className="font-serif text-4xl">{t('prod.empty')}</p><p className="mt-3 text-taupe">{t('prod.emptyD')}</p><div className="mt-8"><TextLink onClick={() => { setCat('all'); setFrag('all') }}>{t('prod.clear')}</TextLink></div></div>
         ) : (
-          <div key={cat + frag} className="grid grid-cols-1 gap-x-8 gap-y-20 sm:grid-cols-2 lg:grid-cols-3">
-            {list.map((p, i) => <Reveal key={p.id} className={`fade-up ${i % 3 === 1 ? 'lg:mt-24' : ''}`} threshold={0.1}><ProductCard p={p} tall={i % 3 === 1} onQuick={setQuick} /></Reveal>)}
+          <div key={cat + frag} className="grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+            {list.map((p, i) => <Reveal key={p.id} className={`fade-up ${i % 3 === 1 ? 'lg:mt-14' : ''}`} threshold={0.1}><ProductCard p={p} tall={i % 3 === 1} onQuick={setQuick} /></Reveal>)}
           </div>
         )}
       </Container>
