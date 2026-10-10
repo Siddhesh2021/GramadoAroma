@@ -40,8 +40,15 @@ export function Parallax({ speed = 0.15, className = '', children, scale, mobile
   const ref = useRef<HTMLDivElement>(null)
   const visible = useRef(true)
   useEffect(() => {
-    const el = ref.current!; const io = new IntersectionObserver(([e]) => (visible.current = e.isIntersecting), { rootMargin: '200px' })
-    io.observe(el); return () => io.disconnect()
+    const el = ref.current
+    if (!el || typeof IntersectionObserver === 'undefined') return
+    try {
+      const io = new IntersectionObserver(([e]) => (visible.current = e.isIntersecting), { rootMargin: '200px' })
+      io.observe(el)
+      return () => io.disconnect()
+    } catch {
+      // Static image positioning is preferable to an observer failure.
+    }
   }, [])
   useSmoothScroll((y) => {
     const el = ref.current; if (!el || !visible.current || reduced()) return
@@ -60,8 +67,27 @@ export function Parallax({ speed = 0.15, className = '', children, scale, mobile
 export function Reveal({ as: Tag = 'div', className = '', children, threshold = 0.2, ...rest }: { as?: ElementType; className?: string; children: ReactNode; threshold?: number; [k: string]: unknown }) {
   const ref = useRef<HTMLElement>(null)
   useEffect(() => {
-    const el = ref.current!; const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { el.classList.add('in'); io.disconnect() } }, { threshold })
-    io.observe(el); return () => io.disconnect()
+    const el = ref.current
+    if (!el) return
+    // Reveal content even when IntersectionObserver is unavailable or throws.
+    if (typeof IntersectionObserver === 'undefined') {
+      el.classList.add('in')
+      return
+    }
+    try {
+      const io = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add('in')
+          io.disconnect()
+        }
+      }, { threshold })
+      io.observe(el)
+      // Avoid permanent blank content if observer callbacks are delayed by a browser.
+      const fallback = window.setTimeout(() => el.classList.add('in'), 900)
+      return () => { io.disconnect(); window.clearTimeout(fallback) }
+    } catch {
+      el.classList.add('in')
+    }
   }, [threshold])
   return <Tag ref={ref} className={className} {...rest}>{children}</Tag>
 }
