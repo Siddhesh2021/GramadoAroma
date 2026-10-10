@@ -4,7 +4,17 @@ import logo from './imports/623959740_17842566177686511_6336884742571772822_n.jp
 
 export type Lang = 'pt' | 'en'
 export type L = { pt: string; en: string }
-const u = (id: string, w = 1400) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&q=75&w=${w}`
+const u = (id: string, w = 1400) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&q=80&w=${w}`
+
+// Some image hosts/URLs can fail intermittently. Keep images visible and swap to a
+// known, deterministic fallback instead of leaving a blank animated frame.
+export const IMAGE_FALLBACK = "https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&q=80&w=1200"
+export const withImageFallback = (event: React.SyntheticEvent<HTMLImageElement>) => {
+  const image = event.currentTarget
+  if (image.dataset.fallbackApplied === "true") return
+  image.dataset.fallbackApplied = "true"
+  image.src = IMAGE_FALLBACK
+}
 
 export const IMG = {
   hero: u('1601922046210-41e129a3e64a', 2000),
