@@ -1,6 +1,6 @@
-import { createContext, useContext, useEffect, useState, type ReactNode, type InputHTMLAttributes } from 'react'
+import { createContext, useContext, useEffect, useState, type ReactNode, type InputHTMLAttributes, type SyntheticEvent } from 'react'
 import { ArrowRight, Star, Minus, Plus, Play, ShoppingBag } from 'lucide-react'
-import { useCMS, brl, type Product, type Post } from './cms'
+import { useCMS, brl, type Product, type Post, withImageFallback } from './cms'
 import { useRouter } from './motion'
 
 export const ArrowBtn = ({ children, onClick, dark = true, href, className = '' }: { children: ReactNode; onClick?: () => void; dark?: boolean; href?: string; className?: string }) => {
@@ -87,8 +87,8 @@ export function ProductCard({ p, tall, onQuick }: { p: Product; tall?: boolean; 
     <article className="group" itemScope itemType="https://schema.org/Product">
       <button onClick={() => go('/produto/' + p.id)} data-cursor="view" data-cursor-label={t('prod.view')} className="block w-full text-left" aria-label={tr(p.name)}>
         <div className="relative aspect-[4/5] overflow-hidden bg-mist">
-          <img itemProp="image" loading="lazy" src={p.imgs[0]} alt={tr(p.name)} className="swap-press absolute inset-0 h-full w-full object-cover transition-all duration-[1400ms] ease-out-lux group-hover:scale-[1.06] group-hover:opacity-0 group-active:scale-[1.04] group-active:opacity-0" />
-          <img loading="lazy" src={p.imgs[1]} alt="" className="swap-press absolute inset-0 h-full w-full scale-[1.12] object-cover opacity-0 transition-all duration-[1400ms] ease-out-lux group-hover:scale-100 group-hover:opacity-100 group-active:scale-100 group-active:opacity-100" />
+          <img itemProp="image" loading="lazy" decoding="async" onError={withImageFallback} src={p.imgs[0]} alt={tr(p.name)} className="swap-press absolute inset-0 h-full w-full object-cover transition-transform duration-[700ms] ease-out-lux group-hover:scale-[1.04] group-active:scale-[1.02]" />
+          <img loading="lazy" decoding="async" onError={withImageFallback} src={p.imgs[1]} alt="" className="swap-press absolute inset-0 h-full w-full scale-[1.12] object-cover opacity-0 transition-all duration-[700ms] ease-out-lux group-hover:scale-100 group-hover:opacity-100 group-active:scale-100 group-active:opacity-100" />
           {!p.stock && <span className="eyebrow absolute left-4 top-4 bg-cream/90 px-3 py-1.5 !text-[9px] text-taupe">{t('prod.out')}</span>}
           <span className="eyebrow absolute right-4 top-4 flex items-center gap-2 !text-[9px] text-cream mix-blend-difference"><span className="h-1.5 w-1.5 rounded-full" style={{ background: f.accent }} />{tr(f.name)}</span>
         </div>
