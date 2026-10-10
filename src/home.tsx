@@ -59,10 +59,26 @@ function ScrubText({ text, className = '' }: { text: string; className?: string 
 function FragImg({ src, alt, className = '' }: { src: string; alt: string; className?: string }) {
   const ref = useRef<HTMLImageElement>(null)
   useEffect(() => {
-    const el = ref.current!
-    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { el.classList.add('in'); io.disconnect() } }, { threshold: 0.2 })
-    io.observe(el)
-    return () => io.disconnect()
+    const el = ref.current
+    if (!el) return
+    if (typeof IntersectionObserver === 'undefined') {
+      el.classList.add('in')
+      return
+    }
+    try {
+      const io = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add('in')
+          io.disconnect()
+        }
+      }, { threshold: 0.2 })
+      io.observe(el)
+      // Do not let an unreliable observer leave a fragrance image invisible.
+      const fallback = window.setTimeout(() => el.classList.add('in'), 1000)
+      return () => { io.disconnect(); window.clearTimeout(fallback) }
+    } catch {
+      el.classList.add('in')
+    }
   }, [])
   return <img ref={ref} loading="lazy" decoding="async" onError={withImageFallback} src={src} alt={alt} className={`frag-image-reveal ${className}`} />
 }
