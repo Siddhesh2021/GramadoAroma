@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { ArrowLeft, ArrowRight, Flame, PenTool, Gem, Hourglass } from 'lucide-react'
-import { useCMS, brl } from './cms'
+import { useCMS, brl, withImageFallback } from './cms'
 import { Parallax, Reveal, Lines, useRouter, useSmoothScroll } from './motion'
 import { ArrowBtn, TextLink, Sparkle, Botanical, Stars, IgTile } from './ui'
 
@@ -64,7 +64,7 @@ function FragImg({ src, alt, className = '' }: { src: string; alt: string; class
     io.observe(el)
     return () => io.disconnect()
   }, [])
-  return <img ref={ref} loading="lazy" src={src} alt={alt} className={`frag-image-reveal ${className}`} />
+  return <img ref={ref} loading="lazy" decoding="async" onError={withImageFallback} src={src} alt={alt} className={`frag-image-reveal ${className}`} />
 }
 
 function Story() {
@@ -150,7 +150,7 @@ function Collection() {
             return (
               <button key={p.id} onClick={() => go('/produto/' + p.id)} data-cursor="view" data-cursor-label={t('prod.view')} className="group relative w-[82vw] shrink-0 snap-center text-left md:w-[30vw] lg:w-[min(28vw,45vh)]">
                 <div className="relative aspect-[4/5] overflow-hidden">
-                  <img loading="lazy" src={p.imgs[0]} alt={tr(p.name)} className="h-full w-full scale-[1.08] object-cover transition-transform duration-[1600ms] ease-out-lux group-hover:translate-x-[-2%] group-hover:scale-[1.14]" />
+                  <img loading="lazy" decoding="async" onError={withImageFallback} src={p.imgs[0]} alt={tr(p.name)} className="h-full w-full scale-[1.08] object-cover transition-transform duration-[1600ms] ease-out-lux group-hover:translate-x-[-2%] group-hover:scale-[1.14]" />
                   <div className="absolute inset-x-0 bottom-0 h-[65%] bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-90 transition-opacity duration-700 group-hover:opacity-100" />
                   <div className="absolute inset-x-0 bottom-0 p-4 pb-6 pt-16 text-white">
                     <p className="eyebrow mb-2 !text-[9px] font-semibold text-gold-2">{tr(f.name)} · {p.size}</p>
